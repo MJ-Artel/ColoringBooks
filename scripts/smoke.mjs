@@ -2,7 +2,7 @@
 // GitHub Pages path, checks every page and internal link, colours pages with every tool on a desktop,
 // a tablet and a phone (with real touch input), checks autosave, downloads and the region-aware Amazon
 // buttons, and writes screenshots.
-//   npm run build && npm run smoke [-- --out <dir>] [-- --base https://mj-artel.github.io/ColoringBooks]
+//   npm run build && npm run smoke [-- --out <dir>] [-- --base https://mjartel.fyi]
 // --base tests a deployed copy instead of dist/.
 // Needs Playwright with Chromium (`npx playwright install chromium`), or PLAYWRIGHT_MODULE pointing at an install.
 
@@ -17,7 +17,7 @@ const arg = (name) => {
   return i > 0 ? process.argv[i + 1] : undefined;
 };
 const out = arg('--out') ?? join(root, 'test-output');
-const BASE_PATH = '/ColoringBooks';
+const BASE_PATH = '';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 
 const TYPES = {
@@ -229,7 +229,7 @@ const zigzag = (y, h = 0.035) => Array.from({ length: 9 }, (_, i) => [0.1 + i * 
     if (m.type() === 'error' && !m.location().url.includes('/no-such-page/')) errors.push(`${m.text()} (${m.location().url})`);
   });
   const xml = await (await page.request.get(`${base}/sitemap-0.xml`)).text();
-  const pages = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].replace(/^https?:\/\/[^/]+\/ColoringBooks/, base));
+  const pages = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].replace(/^https?:\/\/[^/]+/, base));
   check(pages.length >= 9, `sitemap lists ${pages.length} pages`);
   const refs = new Set();
   const problems = [];
@@ -254,7 +254,7 @@ const zigzag = (y, h = 0.035) => Array.from({ length: 9 }, (_, i) => [0.1 + i * 
     if (info.h1 !== 1) problems.push(`${name} has ${info.h1} h1 headings`);
     if (info.title.length < 15 || info.title.length > 75) problems.push(`${name} title is ${info.title.length} characters`);
     if (info.description.length < 70 || info.description.length > 170) problems.push(`${name} description is ${info.description.length} characters`);
-    if (!info.canonical.startsWith('https://mj-artel.github.io/ColoringBooks/')) problems.push(`${name} canonical is ${info.canonical}`);
+    if (!info.canonical.startsWith('https://mjartel.fyi/')) problems.push(`${name} canonical is ${info.canonical}`);
     if (/coloring-book\/$/.test(name) && !info.schema.includes('Book')) problems.push(`${name} has no Book data`);
     if (name.includes('/blog/') && name !== '/blog/' && !info.schema.includes('Article')) problems.push(`${name} has no Article data`);
     for (const r of info.refs) {

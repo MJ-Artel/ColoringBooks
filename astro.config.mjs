@@ -2,11 +2,9 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// GitHub Pages serves the site from /ColoringBooks/ until a custom domain is attached.
-// When it is: set `site` to the domain (e.g. 'https://mjartel.com'), set `base` to '/', and add public/CNAME.
+// Served by GitHub Pages at the custom domain (set in the repo's Settings → Pages).
 export default defineConfig({
-  site: 'https://mj-artel.github.io',
-  base: '/ColoringBooks',
+  site: 'https://mjartel.fyi',
   trailingSlash: 'always',
   integrations: [
     sitemap({

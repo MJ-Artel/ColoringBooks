@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mj-artel.github.io/ColoringBooks/sitemap-index.xml
+Sitemap: https://mjartel.fyi/sitemap-index.xml

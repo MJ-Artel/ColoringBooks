@@ -2,7 +2,7 @@
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
 
-/** Site-relative link: href('blog/') -> '/ColoringBooks/blog/' */
+/** Site-relative link: href('blog/') -> '/blog/' */
 export const href = (path = '') => `${base}/${path.replace(/^\/+/, '')}`;
 
 /** Absolute URL for canonical links, social cards and structured data. */

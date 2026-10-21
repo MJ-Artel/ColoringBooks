@@ -26,7 +26,7 @@ browser. Published to GitHub Pages by GitHub Actions on every push to `main`.
 
 ```sh
 npm install
-npm run dev        # http://localhost:4321/ColoringBooks/
+npm run dev        # http://localhost:4321/
 npm test           # studio engine tests
 npm run build      # site in dist/
 npm run smoke      # browser checks + screenshots in test-output/ (after a build; needs `npx playwright install chromium`)
@@ -57,5 +57,4 @@ The site publishes from GitHub Actions (Settings → Pages → Source: GitHub Ac
 3. **Amazon Associates:** after joining, set `amazonAssociate: true` (adds the disclosure) and swap the store links
    in `color/js/pages.js` for your tagged links.
 4. **Analytics:** set `cloudflareBeacon` to a Cloudflare Web Analytics token (cookie-free, so no banner needed).
-5. **Custom domain:** point the domain at GitHub Pages (Settings → Pages → Custom domain shows the DNS records),
-   then in `astro.config.mjs` set `site` to the domain and `base` to `'/'`, and update `public/robots.txt`.
+5. **Domain:** the site lives at https://mjartel.fyi (DNS at Porkbun, set in Settings → Pages → Custom domain).
