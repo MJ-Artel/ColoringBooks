@@ -8,11 +8,10 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="wood-rule"></div>
   <div class="wrap cols">
-    <div>
-      <p class="name">M.J. Artel</p>
-      <p class="muted">Story-led colouring books for curious kids. {SITE.agesNote}</p>
+    <div class="brand">
+      <p class="wordmark"><span class="hl hl-under">M.J. Artel</span></p>
+      <p>Colouring books for ages {SITE.ages}, and for anyone who still likes to colour.</p>
     </div>
     <nav aria-label="Books">
       <h2>Books</h2>
@@ -36,27 +35,25 @@ const year = new Date().getFullYear();
     </nav>
   </div>
   <div class="wrap legal">
-    <p>© {year} M.J. Artel. Colouring pages are free to print for personal and classroom use.</p>
+    <p>© {year} M.J. Artel. The colouring pages are free to print at home and in class.</p>
     {SITE.amazonAssociate && <p>As an Amazon Associate I earn from qualifying purchases.</p>}
   </div>
 </footer>
 
 <style>
-  .site-footer { background: var(--paper); margin-top: clamp(48px, 7vw, 88px); }
-  .cols {
-    display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 32px;
-    padding-block: 40px 24px;
-  }
-  .name { font: 700 1.4rem/1 var(--font-display); margin-bottom: .5rem; }
-  h2 { font: 800 var(--step--1)/1.3 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .site-footer { margin-top: clamp(56px, 8vw, 104px); background: var(--night); color: #fff; }
+  .cols { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 32px; padding-block: 48px 28px; }
+  .wordmark { margin: 0 0 .7rem; font: 800 1.6rem/1 var(--font-display); }
+  .brand p:last-child { max-width: 30ch; color: #d8dde1; }
+  h2 { margin: 0 0 .6rem; font: 650 1rem/1.2 var(--font-display); color: var(--yellow); }
   ul { list-style: none; margin: 0; padding: 0; }
-  li { margin: 6px 0; }
-  a { font-weight: 700; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  .legal { padding-block: 16px 32px; border-top: 1px solid var(--sand); font-size: var(--step--1); color: var(--muted); }
+  li { margin: 7px 0; }
+  a { color: #fff; text-decoration-color: rgb(255 255 255 / .35); }
+  a:hover { color: #fff; text-decoration-color: var(--yellow); }
+  .legal { padding-block: 18px 34px; border-top: 1.5px solid rgb(255 255 255 / .25); font-size: var(--step--1); color: #c3c9ce; }
   .legal p { margin: 4px 0; }
   @media (max-width: 760px) {
     .cols { grid-template-columns: 1fr 1fr; }
-    .cols > div:first-child { grid-column: 1 / -1; }
+    .brand { grid-column: 1 / -1; }
   }
 </style>

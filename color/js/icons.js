@@ -1,6 +1,6 @@
 // Flat 2D icons. Tool tips and bodies use currentColor, so each tool shows the colour you've picked.
 
-const OUTLINE = 'stroke="#3b2f25" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"';
+const OUTLINE = 'stroke="#161616" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"';
 const tilted = (body, extra = '') =>
   `<svg viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(-40 24 24)" ${OUTLINE}>${body}</g>${extra}</svg>`;
 

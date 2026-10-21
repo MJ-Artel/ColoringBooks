@@ -46,7 +46,7 @@ Metal looks shiny because it reflects light in bright streaks. Kids can fake it 
 3. **Mix your metals.** Steel is grey with a touch of blue; brass is gold with a little brown; copper is orange with brown. Mixing metals on one robot makes it look built from real parts.
 4. **Make the lights glow.** Colour buttons and screens in bright colours and leave a tiny white dot in each one.
 
-In the Colouring Studio, the *Robots & cars* colour set has chrome, steel, brass and copper ready to go. Alcohol markers layer like real metal shading, and the glitter gel pen is perfect for blinking lights.
+In the Colouring Studio, the *Robots & cars* colour set has chrome, steel, brass and copper ready to go. Alcohol markers layer like real metal shading, and the glitter gel pen makes good blinking lights.
 
 ## Robot drawing prompts
 

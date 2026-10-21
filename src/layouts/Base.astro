@@ -7,6 +7,8 @@ import Footer from '../components/Footer.astro';
 import { SITE } from '../data/site';
 import { href } from '../lib/paths';
 import defaultCard from '../../assets/wildwood-cover.jpg';
+import displayFont from '../../color/fonts/shantell-800.woff2?url';
+import textFont from '../../color/fonts/andika-400.woff2?url';
 
 interface Props {
   title: string;
@@ -52,7 +54,9 @@ const json = (data: object) => JSON.stringify(data).replace(/</g, '\\u003c');
     <meta property="og:image" content={cardUrl} />
     <meta property="og:image:alt" content={imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#f6efe0" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={textFont} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href={href('favicon.svg')} type="image/svg+xml" />
     <link rel="sitemap" href={href('sitemap-index.xml')} />
     {schema.map((data) => <script type="application/ld+json" set:html={json(data)} />)}

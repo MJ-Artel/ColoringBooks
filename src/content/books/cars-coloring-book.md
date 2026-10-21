@@ -58,4 +58,4 @@ faq:
 
 Forty cars, one per page: little classics and beetles, minis and city runabouts, limousines and taxis, roadsters and race cars, muscle cars, vans, campers and trucks.
 
-Some cars sit on clean white pages, perfect for a calm colour-in and for younger hands. Others race through sun rays, checkered flags and speed lines, with frames and backgrounds for kids who like a bigger challenge. Every car is printed on its own page with a patterned page behind it, so each drawing gets a fresh start.
+Some cars sit on clean white pages, good for a calm colour-in and for younger hands. Others race through sun rays, checkered flags and speed lines, with frames and backgrounds for kids who like a bigger challenge. Every car is printed on its own page with a patterned page behind it, so each drawing gets a fresh start.

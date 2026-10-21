@@ -1,64 +1,67 @@
 ---
-import Logo from './Logo.astro';
 import { href } from '../lib/paths';
 
 const links = [
   { label: 'Books', path: '#books' },
-  { label: 'Colour online', path: 'color/' },
   { label: 'Free pages', path: 'free-coloring-pages/' },
   { label: 'Blog', path: 'blog/' },
   { label: 'About', path: 'about/' },
 ];
+const studio = { label: 'Colour online', path: 'color/' };
 const here = Astro.url.pathname;
 const current = (path: string) => !path.startsWith('#') && here.startsWith(href(path));
 ---
 
 <header class="site-header">
   <div class="wrap bar">
-    <a class="logo" href={href('')}>
-      <Logo />
-      <span>M.J. Artel</span>
-    </a>
+    <a class="wordmark" href={href('')}><span class="hl">M.J. Artel</span></a>
     <nav aria-label="Main">
       <ul class="links">
         {links.map((l) => <li><a href={href(l.path)} aria-current={current(l.path) ? 'page' : undefined}>{l.label}</a></li>)}
+        <li><a class="btn btn-primary studio" href={href(studio.path)}>{studio.label}</a></li>
       </ul>
       <details class="menu">
         <summary>Menu</summary>
         <ul>
           {links.map((l) => <li><a href={href(l.path)} aria-current={current(l.path) ? 'page' : undefined}>{l.label}</a></li>)}
+          <li><a href={href(studio.path)}>{studio.label}</a></li>
         </ul>
       </details>
     </nav>
   </div>
-  <div class="wood-rule"></div>
 </header>
 
 <style>
-  .site-header { background: var(--paper); position: relative; z-index: 10; }
-  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; }
-  .logo {
-    display: inline-flex; align-items: center; gap: 8px;
-    font: 700 1.45rem/1 var(--font-display); color: var(--ink); text-decoration: none;
+  .site-header { position: relative; z-index: 10; background: var(--paper); border-bottom: var(--line) solid var(--ink); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 78px; }
+  .wordmark {
+    padding: 8px 4px; font: 800 1.6rem/1 var(--font-display); color: var(--ink); text-decoration: none;
   }
-  .links { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
-  .links a, .menu a {
-    display: block; padding: 10px 12px; border-radius: 10px;
-    color: var(--ink); font-weight: 800; text-decoration: none;
+  .links { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
+  .links a:not(.btn), .menu a {
+    position: relative; z-index: 0; display: block; padding: 10px 12px;
+    font: 650 1.02rem/1.2 var(--font-display); color: var(--ink); text-decoration: none;
   }
-  .links a:hover, .menu a:hover { background: var(--cream); }
-  a[aria-current='page'] { color: var(--moss-2); box-shadow: inset 0 -3px 0 var(--honey); border-radius: 10px 10px 4px 4px; }
+  .links a:not(.btn):hover { text-decoration: underline; text-decoration-color: var(--orange); }
+  a[aria-current='page']::before {
+    content: ""; position: absolute; z-index: -1; inset: 12px 4px 6px;
+    background: var(--sky);
+    -webkit-mask: var(--scribble) center / 100% 100% no-repeat; mask: var(--scribble) center / 100% 100% no-repeat;
+  }
+  .studio { min-height: 44px; margin-left: 12px; padding-inline: 1em; font-size: 1rem; }
   .menu { display: none; position: relative; }
   .menu summary {
-    list-style: none; cursor: pointer; padding: 10px 16px; border-radius: 999px;
-    font-weight: 800; box-shadow: inset 0 0 0 1.5px var(--sand-2);
+    list-style: none; cursor: pointer; padding: 9px 16px; border: var(--line) solid var(--ink); border-radius: 14px;
+    font: 650 1rem/1.2 var(--font-display);
   }
   .menu summary::-webkit-details-marker { display: none; }
+  .menu[open] summary { background: var(--yellow); }
   .menu ul {
-    position: absolute; right: 0; top: calc(100% + 8px); min-width: 220px; margin: 0; padding: 8px;
-    list-style: none; background: var(--paper); border: 1px solid var(--sand); border-radius: 14px; box-shadow: var(--shadow);
+    position: absolute; right: 0; top: calc(100% + 10px); min-width: 230px; margin: 0; padding: 8px;
+    list-style: none; background: var(--paper); border: var(--line) solid var(--ink); border-radius: 14px;
+    box-shadow: 6px 6px 0 var(--ink);
   }
-  @media (max-width: 760px) {
+  @media (max-width: 820px) {
     .links { display: none; }
     .menu { display: block; }
   }

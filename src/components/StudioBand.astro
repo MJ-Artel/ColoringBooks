@@ -6,38 +6,49 @@ import shot from '../../assets/studio-preview.jpg';
 interface Props { page?: string; heading?: string; intro?: string }
 const {
   page = 'wildwood-73',
-  heading = 'Colour a page right here',
-  intro = 'Pick a page from any of the three books and colour it in your browser, on a computer, tablet or phone. Every art supply behaves like the real thing.',
+  heading = 'The Colouring Studio',
+  intro = 'Sixteen pages from the three books, free to colour on a computer, tablet or phone. No account, nothing to install.',
 } = Astro.props;
 ---
 
-<section class="studio section" aria-labelledby="studio-heading">
+<section class="studio field-sky" aria-labelledby="studio-heading">
   <div class="wrap grid">
-    <div>
-      <p class="eyebrow">Free · no sign-up · works on tablets</p>
+    <div class="text">
       <h2 id="studio-heading">{heading}</h2>
-      <p>{intro}</p>
-      <ul>
-        <li><strong>Pencil crayons</strong> and <strong>wax crayons</strong> that catch the paper’s grain</li>
+      <p class="lede">{intro}</p>
+      <ul class="supplies">
+        <li><strong>Pencil crayons</strong> and <strong>wax crayons</strong> that catch the grain of the paper</li>
         <li><strong>Watercolours</strong> that dry with soft, darker edges</li>
-        <li><strong>Felt tips</strong> and <strong>alcohol markers</strong> that layer and blend</li>
+        <li><strong>Felt tips</strong> and <strong>alcohol markers</strong> that layer as they would on paper</li>
         <li><strong>Glitter gel pens</strong>, a pencil, a paint bucket and an eraser</li>
       </ul>
-      <p class="muted">Little hands can switch on <em>Stay inside the lines</em>. Finished pictures can be saved or printed.</p>
-      <a class="btn btn-primary" href={href(`color/#${page}`)}>Open the Colouring Studio</a>
+      <p>Little hands can switch on <em>Stay inside the lines</em>. Finished pictures can be saved or printed.</p>
+      <a class="btn btn-buy" href={href(`color/#${page}`)}>Open the Colouring Studio</a>
     </div>
     <a class="shot" href={href(`color/#${page}`)} tabindex="-1" aria-hidden="true">
-      <Image src={shot} alt="" widths={[600, 900, 1360]} sizes="(max-width: 900px) 92vw, 620px" />
+      <Image src={shot} alt="" widths={[600, 900, 1360]} sizes="(max-width: 900px) 92vw, 640px" />
     </a>
   </div>
 </section>
 
 <style>
-  .studio { background: var(--paper); border-block: 1px solid var(--sand); }
-  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(24px, 5vw, 56px); align-items: center; }
-  ul { padding-left: 1.2em; margin: 0 0 1em; }
-  li { margin: 4px 0; }
-  .shot img { border-radius: 14px; box-shadow: var(--shadow); transition: transform .15s ease; }
-  .shot:hover img { transform: translateY(-3px); }
-  @media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } .shot { order: -1; } }
+  .studio { padding-block: clamp(56px, 8vw, 100px); border-block: var(--line) solid var(--ink); }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+  .lede { max-width: 32ch; }
+  .supplies { list-style: none; padding: 0; margin: 0 0 1.1em; }
+  .supplies li { position: relative; margin: 8px 0; padding-left: 30px; }
+  .supplies li::before {
+    content: ""; position: absolute; left: 0; top: .32em; width: 20px; height: 14px; background: var(--c, var(--orange));
+    -webkit-mask: var(--scribble) center / 100% 100% no-repeat; mask: var(--scribble) center / 100% 100% no-repeat;
+  }
+  .supplies li:nth-child(2)::before { --c: var(--blue); }
+  .supplies li:nth-child(3)::before { --c: var(--red); }
+  .supplies li:nth-child(4)::before { --c: var(--purple); }
+  .shot img { border: var(--line) solid var(--ink); border-radius: 10px; background: #fff; }
+  .shot { transform: rotate(1.2deg); transition: transform .2s ease; }
+  .shot:hover { transform: rotate(0); }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: minmax(0, 1fr); }
+    .shot { order: -1; }
+  }
 </style>

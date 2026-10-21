@@ -26,6 +26,7 @@ const studioPages = PAGES.filter((p: { book: string }) => p.book === d.key);
 const trail = [{ name: d.title, path: `${book.id}/` }];
 const coverCard = await getImage({ src: d.cover, width: 800, format: 'jpg' });
 const site = Astro.site;
+const field = { wildwood: 'field-sky', robot: 'field-night', cars: 'field-teal' }[d.key];
 
 const schema = [
   {
@@ -51,50 +52,47 @@ const schema = [
 ---
 
 <Base title={`${d.seoTitle} | M.J. Artel`} description={d.description} image={d.cover} imageAlt={d.coverAlt} schema={schema}>
-  <section class="hero">
-    <div class="wrap grid">
-      <div class="cover">
-        <Image src={d.cover} alt={d.coverAlt} widths={[360, 540, 760]} sizes="(max-width: 860px) 80vw, 460px" loading="eager" />
+  <section class={`hero theme-${d.key}`}>
+    <div class={`band ${field}`}>
+      <Image class="cover" src={d.cover} alt={d.coverAlt} widths={[360, 540, 760]} sizes="(max-width: 860px) 78vw, 440px" loading="eager" />
+    </div>
+    <div class="text">
+      <Breadcrumbs trail={trail} />
+      <h1>{d.title}</h1>
+      <p class="lede">{d.hook}</p>
+      <ul class="facts">
+        <li><strong>Ages {d.ages}</strong>, and any age can enjoy it</li>
+        <li><strong>{d.pictures} pictures</strong> to colour</li>
+        <li><strong>{d.pageCount} pages</strong>, {d.trim}</li>
+      </ul>
+      <div class="actions">
+        <BuyButton book={d.key} />
+        {studioPages.length > 0 && <a class="btn btn-ghost try" href={href(`color/#${studioPages[0].id}`)}>Colour a page online</a>}
       </div>
-      <div>
-        <Breadcrumbs trail={trail} />
-        <p class="eyebrow">A colouring book by M.J. Artel</p>
-        <h1>{d.title}</h1>
-        <p class="lede">{d.hook}</p>
-        <ul class="facts">
-          <li><strong>Ages</strong> {d.ages}, and any age can enjoy it</li>
-          <li><strong>{d.pictures}</strong> pictures to colour</li>
-          <li><strong>{d.pageCount}</strong> pages · {d.trim}</li>
-        </ul>
-        <div class="actions">
-          <BuyButton book={d.key} />
-          {studioPages.length > 0 && <a class="btn btn-ghost try" href={href(`color/#${studioPages[0].id}`)}>Colour a page online</a>}
-        </div>
-        {
-          d.editions.length > 0 && (
-            <p class="editions">
-              Also in other languages:{' '}
-              {d.editions.map((e, i) => (
-                <>
-                  {i > 0 && ' · '}
-                  <a href={e.url} target="_blank" rel="noopener">{e.label}</a>
-                </>
-              ))}
-            </p>
-          )
-        }
-      </div>
+      {
+        d.editions.length > 0 && (
+          <p class="editions">
+            Also in other languages:{' '}
+            {d.editions.map((e, i) => (
+              <>
+                {i > 0 && ' · '}
+                <a href={e.url} target="_blank" rel="noopener">{e.label}</a>
+              </>
+            ))}
+          </p>
+        )
+      }
     </div>
   </section>
 
-  <section class="section-tight">
+  <section class="section">
     <div class="wrap story">
       <div class="prose">
         <h2>{d.key === 'cars' ? 'What’s inside' : 'The story'}</h2>
         <Content />
       </div>
       <ul class="features">
-        {d.features.map((f) => <li class="card"><h3>{f.title}</h3><p>{f.text}</p></li>)}
+        {d.features.map((f) => <li><h3>{f.title}</h3><p>{f.text}</p></li>)}
       </ul>
     </div>
   </section>
@@ -113,8 +111,8 @@ const schema = [
     studioPages.length > 0 && (
       <StudioBand
         page={studioPages[0].id}
-        heading={`Try ${studioPages.length} pages from this book online`}
-        intro={`Colour pages from ${d.title} in your browser before you buy, on a computer, tablet or phone. Every art supply behaves like the real thing.`}
+        heading={`Try ${studioPages.length} pages online`}
+        intro={`Colour pages from ${d.title} before you buy, on a computer, tablet or phone. No account, nothing to install.`}
       />
     )
   }
@@ -127,36 +125,57 @@ const schema = [
 
   <section class="section-tight" aria-labelledby="more-heading">
     <div class="wrap">
-      <h2 id="more-heading" class="center">More books by M.J. Artel</h2>
+      <h2 id="more-heading">More books by M.J. Artel</h2>
       <div class="more">{others.map((b) => <BookCard book={b} />)}</div>
     </div>
   </section>
 
-  <section class="section-tight">
+  <section class="section">
     <div class="wrap"><FreePack /></div>
   </section>
 </Base>
 
 <style>
-  .hero { padding-block: clamp(24px, 5vw, 56px) clamp(32px, 6vw, 72px); background: linear-gradient(var(--paper), var(--cream)); }
-  .grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
-  .cover img { border-radius: 14px; box-shadow: 0 24px 50px rgba(60, 40, 20, .25); transform: rotate(-1.5deg); }
-  h1 { margin-bottom: .25em; }
-  .facts { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 4px; color: var(--muted); }
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border-bottom: var(--line) solid var(--ink); }
+  .band {
+    display: flex; align-items: center; justify-content: center;
+    padding: clamp(32px, 6vw, 80px) clamp(28px, 5vw, 72px);
+    padding-left: max(var(--gutter), calc((100vw - var(--wide)) / 2));
+    border-right: var(--line) solid var(--ink);
+  }
+  .band :global(.cover) {
+    width: min(100%, 440px); border: var(--line) solid var(--ink); border-radius: 8px; transform: rotate(-2deg);
+    box-shadow: 10px 10px 0 rgb(0 0 0 / .18);
+  }
+  .text {
+    align-self: center;
+    padding: clamp(28px, 5vw, 64px) max(var(--gutter), calc((100vw - var(--wide)) / 2)) clamp(32px, 5vw, 64px) clamp(28px, 5vw, 64px);
+  }
+  h1 { margin-bottom: .25em; font-size: clamp(2.2rem, 1.5rem + 2.8vw, 3.5rem); }
+  .lede { margin-bottom: 18px; }
+  .facts { list-style: none; padding: 0; margin: 0 0 26px; display: grid; gap: 4px; color: var(--ink-2); }
   .facts strong { color: var(--ink); }
   .actions { align-items: flex-start; }
-  .try { margin-top: 0; }
-  .editions { margin: 16px 0 0; font-size: var(--step--1); color: var(--muted); }
-  .editions a { font-weight: 800; }
-  .story { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 56px); align-items: start; }
-  .features { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-  .features li { padding: 18px 20px; }
-  .features h3 { font-size: var(--step-1); margin-bottom: .3em; }
-  .features p { margin: 0; color: var(--muted); }
-  .more { display: grid; grid-template-columns: repeat(2, minmax(0, 340px)); justify-content: center; gap: 24px; margin-top: 24px; }
+  .editions { margin: 18px 0 0; font-size: var(--step--1); color: var(--ink-2); }
+  .story { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+  .story .prose :global(h2:first-child) { margin-top: 0; }
+  .features { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+  .features li { position: relative; padding-left: 40px; }
+  .features li::before {
+    content: ""; position: absolute; left: 0; top: .3em; width: 26px; height: 18px; background: var(--c, var(--orange));
+    -webkit-mask: var(--scribble) center / 100% 100% no-repeat; mask: var(--scribble) center / 100% 100% no-repeat;
+  }
+  .features li:nth-child(2)::before { --c: var(--blue); }
+  .features li:nth-child(3)::before { --c: var(--green); }
+  .features li:nth-child(4)::before { --c: var(--red); }
+  .features h3 { margin-bottom: .2em; font-size: var(--step-1); }
+  .features p { margin: 0; color: var(--ink-2); }
+  .more { display: grid; grid-template-columns: repeat(2, minmax(0, 340px)); gap: clamp(28px, 4vw, 56px); margin-top: 28px; }
   @media (max-width: 860px) {
-    .grid, .story { grid-template-columns: minmax(0, 1fr); }
-    .cover { max-width: 260px; margin-inline: auto; }
-    .more { grid-template-columns: minmax(0, 1fr); }
+    .hero, .story { grid-template-columns: minmax(0, 1fr); }
+    .band { padding: 32px var(--gutter) 40px; border-right: 0; border-bottom: var(--line) solid var(--ink); }
+    .band :global(.cover) { width: min(78vw, 320px); }
+    .text { padding: 24px var(--gutter) 36px; }
+    .more { grid-template-columns: minmax(0, 1fr); max-width: 420px; }
   }
 </style>

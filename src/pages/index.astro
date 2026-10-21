@@ -4,9 +4,11 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import BuyButton from '../components/BuyButton.astro';
 import BookCard from '../components/BookCard.astro';
+import ColourMe from '../components/ColourMe.astro';
 import StudioBand from '../components/StudioBand.astro';
 import FreePack from '../components/FreePack.astro';
 import ArticleCard from '../components/ArticleCard.astro';
+import Arrow from '../components/Arrow.astro';
 import { SITE } from '../data/site';
 import { href } from '../lib/paths';
 import { author } from '../lib/schema';
@@ -26,32 +28,43 @@ const schema = [
 <Base title="M.J. Artel · Story-Led Colouring Books for Kids 4–10" description={SITE.description} schema={schema}>
   <section class="hero">
     <div class="wrap grid">
-      <div>
-        <p class="eyebrow">Colouring books by M.J. Artel</p>
-        <h1>{SITE.tagline}</h1>
+      <div class="head">
+        <h1>Who will you <span class="hl">cheer</span> for?</h1>
         <p class="lede">
-          Every picture comes with a story: woodland animals at their very own games, a tiny robot who collects
-          colouring books, and a garage full of cars.
+          In <a href={href('wildwood-games-coloring-book/')}>The Wildwood Games</a>, the Foxes, Bears, Wolves and Eagles
+          compete for forest fame while Snappy Snapsalot, a snapping turtle, referees. Each of its 37 pictures comes with
+          a page of story.
         </p>
-        <div class="actions">
-          <BuyButton book="wildwood" label="Buy The Wildwood Games" />
-          <a class="btn btn-ghost" href={href('color/#wildwood-29')}>Colour a page online</a>
-        </div>
-        <p class="ages">{SITE.agesNote}</p>
       </div>
-      <a class="cover" href={href('wildwood-games-coloring-book/')} aria-label="The Wildwood Games: see inside">
-        <span class="badge">Newest</span>
-        <Image src={cover} alt="The Wildwood Games cover: a bear, a wolf, an eagle and a fox on a winners’ podium" widths={[380, 560, 760]} sizes="(max-width: 860px) 80vw, 480px" loading="eager" />
-      </a>
+      <div class="pic">
+        <ColourMe
+          page="wildwood-29"
+          width={1166}
+          height={1200}
+          start="assets/hero/wildwood-29-start.webp"
+          alt="Fox soccer, a page from The Wildwood Games: a fox in a football shirt kicks a ball, half coloured in with orange and blue crayon."
+          hint="Finish the fox: pick a crayon, then tap the picture."
+        />
+      </div>
+      <div class="buy-area">
+        <div class="buy-row">
+          <a class="mini-cover" href={href('wildwood-games-coloring-book/')} tabindex="-1" aria-hidden="true">
+            <Image src={cover} alt="" width={96} densities={[1, 2]} loading="eager" />
+          </a>
+          <BuyButton book="wildwood" label="Buy The Wildwood Games" />
+        </div>
+        <p class="ages">For ages {SITE.ages}, and any age can enjoy it.</p>
+        <p class="others">
+          More of a robots or cars family? Try the <a href={href('robot-coloring-book/')}>Robot Coloring Book</a> or
+          the <a href={href('cars-coloring-book/')}>Cars Coloring Book</a>.
+        </p>
+      </div>
     </div>
   </section>
 
   <section id="books" class="section" aria-labelledby="books-heading">
     <div class="wrap">
-      <div class="section-head">
-        <h2 id="books-heading">The books</h2>
-        <p>Three books, each with its own cast of characters. Look inside each one, or try a few pages online first.</p>
-      </div>
+      <h2 id="books-heading" class="shelf-title">Animals, robots or <span class="hl" style="--hl: var(--orange)">cars?</span></h2>
       <div class="books">{books.map((b) => <BookCard book={b} />)}</div>
     </div>
   </section>
@@ -66,59 +79,68 @@ const schema = [
     articles.length > 0 && (
       <section class="section-tight" aria-labelledby="blog-heading">
         <div class="wrap">
-          <div class="section-head">
-            <h2 id="blog-heading">Ideas for screen-light afternoons</h2>
-            <p>Activities, printables and party ideas from the M.J. Artel blog.</p>
+          <div class="posts-head">
+            <h2 id="blog-heading">From the blog</h2>
+            <a href={href('blog/')}>All articles<Arrow /></a>
           </div>
           <div class="posts">{articles.map((a) => <ArticleCard article={a} />)}</div>
-          <p class="center"><a class="btn btn-ghost" href={href('blog/')}>All articles</a></p>
         </div>
       </section>
     )
   }
 
   <section class="section-tight">
-    <div class="wrap about card">
+    <div class="wrap note">
+      <h2>A note from M.J. Artel</h2>
       <div>
-        <h2>Made by one person, with care</h2>
         <p>
-          M.J. Artel is an independent colouring book creator and producer: one person making every book, from the
-          first idea to the finished pages. If one of these books has made someone happy, a review on Amazon helps
-          more than you’d think.
+          I make colouring books where the pictures belong to a story: a snapping turtle who referees the forest games,
+          a tiny robot who loses his favourite colouring book. If one of them has kept someone happily busy, a short
+          review on Amazon helps other families find it.
         </p>
-        <a href={href('about/')}>More about M.J. Artel</a>
+        <p class="sig"><span class="hl">M.J. Artel</span></p>
+        <a href={href('about/')}>More about M.J. Artel<Arrow /></a>
       </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .hero {
-    padding-block: clamp(32px, 6vw, 80px);
-    background:
-      radial-gradient(ellipse at 80% 10%, rgba(242, 193, 78, .18), transparent 45%),
-      linear-gradient(var(--paper), var(--cream));
+  .hero { padding-block: clamp(24px, 5vw, 64px) clamp(8px, 2vw, 24px); }
+  .grid {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "head pic" "buy pic";
+    grid-template-rows: auto 1fr; column-gap: clamp(28px, 5vw, 72px);
   }
-  .grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
-  h1 { max-width: 15ch; }
-  .lede { margin-bottom: 28px; }
-  .actions { align-items: flex-start; }
-  .ages { margin-top: 18px; color: var(--muted); font-weight: 700; }
-  .cover { position: relative; display: block; }
-  .cover img { border-radius: 16px; box-shadow: 0 26px 56px rgba(60, 40, 20, .28); transform: rotate(2deg); transition: transform .2s ease; }
-  .cover:hover img { transform: rotate(0deg) translateY(-4px); }
-  .badge {
-    position: absolute; z-index: 1; top: -12px; left: -8px; padding: 6px 14px; border-radius: 999px;
-    background: var(--honey); font-weight: 800; box-shadow: 0 3px 0 var(--honey-2); transform: rotate(-6deg);
+  .head { grid-area: head; align-self: end; padding-top: clamp(0px, 4vw, 56px); }
+  .pic { grid-area: pic; }
+  .buy-area { grid-area: buy; }
+  h1 { max-width: 11ch; margin-bottom: .35em; }
+  .lede { max-width: 34ch; margin-bottom: 28px; }
+  .buy-row { display: flex; align-items: flex-start; gap: 18px; }
+  .mini-cover img { width: 96px; border: 2px solid var(--ink); border-radius: 6px; transform: rotate(-3deg); }
+  .ages { margin: 20px 0 6px; font-weight: 700; }
+  .others { margin: 0; color: var(--ink-2); max-width: 40ch; }
+  .shelf-title { margin-bottom: clamp(28px, 4vw, 48px); }
+  .books { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 4vw, 56px); }
+  .posts-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 28px; }
+  .posts-head h2 { margin: 0; }
+  .posts-head a { font: 650 1.05rem/1.3 var(--font-display); }
+  .posts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 36px); }
+  .note {
+    display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(16px, 4vw, 56px);
+    padding-top: clamp(32px, 5vw, 56px); border-top: var(--line) solid var(--ink);
   }
-  .books { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.5vw, 28px); }
-  .posts { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 360px)); justify-content: center; gap: 24px; margin-bottom: 24px; }
-  .about { padding: clamp(24px, 4vw, 40px); max-width: 52rem; margin-inline: auto; text-align: center; }
-  .about p { color: var(--muted); }
-  .about a { font-weight: 800; }
-  @media (max-width: 860px) {
-    .grid { grid-template-columns: minmax(0, 1fr); }
-    .cover { max-width: 250px; margin-inline: auto; order: -1; }
-    .books { grid-template-columns: minmax(0, 1fr); max-width: 420px; margin-inline: auto; }
+  .note p { max-width: 54ch; font-size: var(--step-1); }
+  .sig { margin: .2em 0 .8em; font: 800 1.6rem/1 var(--font-display); }
+  .note a { font: 650 1.02rem/1.3 var(--font-display); }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "pic" "buy"; grid-template-rows: auto; }
+    .head { padding-top: 0; }
+    .lede { margin-bottom: 20px; }
+    .buy-area { margin-top: 36px; }
+    .mini-cover img { width: 70px; }
+    .books { grid-template-columns: minmax(0, 1fr); max-width: 440px; }
+    .posts { grid-template-columns: minmax(0, 1fr); max-width: 520px; }
+    .note { grid-template-columns: minmax(0, 1fr); }
   }
 </style>

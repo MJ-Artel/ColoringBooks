@@ -1,19 +1,29 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import { href } from '../lib/paths';
+import lost from '../../assets/page-63.jpg';
 ---
 
 <Base title="Page not found | M.J. Artel" description="This page wandered off into the Wildwoods." noindex>
   <section class="section">
-    <div class="wrap center">
-      <p class="eyebrow">Page not found</p>
-      <h1>This page wandered off into the Wildwoods</h1>
-      <p class="lede" style="margin-inline: auto">It may have moved, or the address may have a typo. These are good places to start:</p>
-      <div class="actions" style="justify-content: center">
-        <a class="btn btn-primary" href={href('')}>Home</a>
-        <a class="btn btn-ghost" href={href('color/')}>Colouring Studio</a>
-        <a class="btn btn-ghost" href={href('free-coloring-pages/')}>Free pages</a>
+    <div class="wrap lost">
+      <div>
+        <h1>This page wandered off into the <span class="hl" style="--hl: var(--sky)">Wildwoods</span></h1>
+        <p class="lede">It may have moved, or the address may have a typo. These are good places to start:</p>
+        <div class="actions">
+          <a class="btn btn-buy" href={href('')}>Home</a>
+          <a class="btn btn-ghost" href={href('color/')}>Colouring Studio</a>
+          <a class="btn btn-ghost" href={href('free-coloring-pages/')}>Free pages</a>
+        </div>
       </div>
+      <Image src={lost} alt="Bears, wolves and foxes run through the dark forest under a crescent moon" width={420} />
     </div>
   </section>
 </Base>
+
+<style>
+  .lost { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+  .lost img { border: var(--line) solid var(--ink); border-radius: 6px; transform: rotate(2deg); }
+  @media (max-width: 760px) { .lost { grid-template-columns: minmax(0, 1fr); } }
+</style>

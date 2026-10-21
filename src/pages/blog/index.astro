@@ -18,13 +18,13 @@ const trail = [{ name: 'Blog', path: 'blog/' }];
     <div class="wrap">
       <Breadcrumbs trail={trail} />
       <h1>The blog</h1>
-      <p class="lede">Activity ideas, free printables and party plans for kids aged 4–10.</p>
+      <p class="lede">Field days, classroom activities and free pages to print, for kids aged 4–10.</p>
       <div class="posts">{articles.map((a) => <ArticleCard article={a} />)}</div>
     </div>
   </section>
 </Base>
 
 <style>
-  .lede { margin-bottom: 32px; }
-  .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+  .lede { margin-bottom: 40px; }
+  .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: clamp(28px, 4vw, 44px) clamp(20px, 3vw, 36px); }
 </style>

@@ -52,7 +52,7 @@ const schema = [
 
         <h2>Local editions, and other languages</h2>
         <p>
-          The Wildwood Games comes in two English editions: <em>A Coloring Book</em> for the United States and
+          The Wildwood Games comes in two English editions: <em>A Coloring Book</em> for the United States and{' '}
           <em>A Colouring Book</em> for Canada and the United Kingdom. Fully translated editions are available in other
           languages too.
         </p>
@@ -60,7 +60,7 @@ const schema = [
         <h2>Say hello</h2>
         <p>
           The kindest thing you can do for an independent creator is leave an honest review on Amazon: it helps other
-          families find the books. You can also <a href={href('free-coloring-pages/')}>get the free colouring pack</a>
+          families find the books. You can also <a href={href('free-coloring-pages/')}>get the free colouring pack</a>{' '}
           for new pages and news{SITE.contactEmail ? <>, or <a href={href('contact/')}>get in touch</a></> : ''}.
         </p>
       </div>
@@ -69,13 +69,13 @@ const schema = [
 
   <section class="section-tight" aria-labelledby="books-heading">
     <div class="wrap">
-      <h2 id="books-heading" class="center">The books</h2>
+      <h2 id="books-heading">The books</h2>
       <div class="books">{books.map((b) => <BookCard book={b} />)}</div>
     </div>
   </section>
 </Base>
 
 <style>
-  .books { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
+  .books { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 4vw, 56px); margin-top: 28px; }
   @media (max-width: 860px) { .books { grid-template-columns: minmax(0, 1fr); max-width: 420px; margin-inline: auto; } }
 </style>

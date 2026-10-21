@@ -219,6 +219,36 @@ const zigzag = (y, h = 0.035) => Array.from({ length: 9 }, (_, i) => [0.1 + i * 
   await context.close();
 }
 
+// Home page: visitors colour the fox right there, and the Studio opens the picture as they left it.
+{
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const page = await context.newPage();
+  page.on('console', (m) => m.type() === 'error' && errors.push(`${m.text()} (${m.location().url})`));
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto(`${base}/`);
+  await page.waitForSelector('[data-colour-me].is-live', { timeout: 15000 });
+  const coloured = () => page.evaluate(() => {
+    const c = document.querySelector('[data-colour-me] canvas');
+    const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+    let n = 0;
+    for (let j = 3; j < d.length; j += 4) if (d[j]) n++;
+    return n;
+  });
+  const before = await coloured();
+  check(before > 10000, `the home page fox starts partly coloured (${before} px)`);
+  await page.locator('[data-crayon="#e5432f"]').click();
+  const sheet = await page.locator('[data-colour-me] .sheet').boundingBox();
+  await page.mouse.click(sheet.x + (sheet.width * 560) / 1166, sheet.y + (sheet.height * 850) / 1200);
+  const after = await coloured();
+  check(after > before + 5000, `tapping the fox's shorts colours them (${after - before} px)`);
+  await page.screenshot({ path: join(out, 'site-home-coloured.png') });
+  await Promise.all([page.waitForURL(/\/color\/#wildwood-29$/), page.locator('[data-studio]').click()]);
+  await page.waitForSelector('body[data-ready="wildwood-29"]', { timeout: 15000 });
+  const inStudio = await inked(page);
+  check(Math.abs(inStudio - after) < after * 0.02, `the Studio opens the fox as it was left (${inStudio} px)`);
+  await context.close();
+}
+
 // Website: every page in the sitemap loads cleanly, every internal link, image and download works,
 // and each page describes itself for search engines.
 {

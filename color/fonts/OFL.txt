@@ -1,14 +1,13 @@
-Fraunces and Nunito Sans are used under the SIL Open Font License 1.1.
+Shantell Sans and Andika are used under the SIL Open Font License 1.1.
 
-=== Fraunces ===
-Copyright 2020 The Fraunces Project Authors (github.com/undercasetype/Fraunces) Fraunces-Italic[SOFT,WONK,opsz,wght].ttf: Copyright 2020 The Fraunces Project Authors (github.com/undercasetype/Fraunces)
+=== Shantell Sans ===
+Copyright 2022 The Shantell Sans Project Authors (https://github.com/arrowtype/shantell-sans)
+shantell-800.woff2 and shantell-650.woff2 are static instances (Latin subset) of the variable font:
+weight 800 with bounce 40 and informality 10, and weight 650 with bounce 20.
 
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is copied below, and is also available with a FAQ at:
-http://scripts.sil.org/OFL
+=== Andika ===
+Copyright (c) 2004-2022 SIL International (https://software.sil.org/andika/)
 
-
------------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
 -----------------------------------------------------------
 

@@ -7,25 +7,26 @@ interface Props { article: CollectionEntry<'articles'> }
 const { article } = Astro.props;
 const d = article.data;
 const url = href(`blog/${article.id}/`);
-const date = d.pubDate.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 ---
 
-<article class="post card">
-  <a href={url} tabindex="-1" aria-hidden="true"><Image src={d.hero} alt="" widths={[360, 540, 720]} sizes="(max-width: 760px) 92vw, 360px" /></a>
-  <div class="body">
-    <h3><a href={url}>{d.title}</a></h3>
-    <p>{d.description}</p>
-    <p class="date"><time datetime={d.pubDate.toISOString()}>{date}</time></p>
-  </div>
+<article class="post">
+  <a class="pic" href={url} tabindex="-1" aria-hidden="true">
+    <Image src={d.hero} alt="" widths={[360, 540, 720]} sizes="(max-width: 760px) 92vw, 360px" />
+  </a>
+  <h3><a href={url}>{d.title}</a></h3>
+  <p>{d.description}</p>
 </article>
 
 <style>
-  .post { overflow: hidden; display: flex; flex-direction: column; }
-  img { aspect-ratio: 16 / 10; object-fit: cover; width: 100%; background: #fff; }
-  .body { padding: 16px 20px 20px; }
-  h3 { font-size: var(--step-1); margin-bottom: .4em; }
-  h3 a { color: var(--ink); text-decoration: none; }
-  h3 a:hover { text-decoration: underline; }
-  p { margin: 0 0 .5em; color: var(--muted); font-size: var(--step--1); }
-  .date { font-weight: 700; }
+  .post { display: flex; flex-direction: column; }
+  .pic { display: block; margin-bottom: 14px; }
+  .pic img {
+    width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #fff;
+    border: var(--line) solid var(--ink); border-radius: 8px; transition: transform .2s ease;
+  }
+  .pic:hover img { transform: rotate(-1deg); }
+  h3 { margin-bottom: .35em; font-size: var(--step-1); line-height: 1.2; }
+  h3 a { text-decoration: none; }
+  h3 a:hover { text-decoration: underline; text-decoration-color: var(--orange); }
+  p { margin: 0; color: var(--ink-2); font-size: var(--step--1); }
 </style>

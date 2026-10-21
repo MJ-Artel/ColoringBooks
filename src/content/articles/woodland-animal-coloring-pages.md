@@ -75,7 +75,7 @@ In the book, the Foxes love agility: soccer, the steeplechase and kayaking. Ther
 
 *Snappy lights the opening torch. [Colour this page online](../../color/#wildwood-5).*
 
-Every Wildwood Games is opened by Snappy Snapsalot, the wise old snapping turtle who knows every rule. Real snapping turtles are olive green, brown or muddy grey, often with a little green algae growing on their shells. A watercolour wash in green and brown is perfect for that.
+Every Wildwood Games is opened by Snappy Snapsalot, the wise old snapping turtle who knows every rule. Real snapping turtles are olive green, brown or muddy grey, often with a little green algae growing on their shells. A watercolour wash in green and brown gets that look.
 
 ## Or make it your own
 

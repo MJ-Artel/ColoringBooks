@@ -1,0 +1,106 @@
+---
+// A studio page visitors can colour right here: tap a crayon, tap the picture (color/js/colour-me.js).
+// The starting colours are a picture made with the studio's own wax crayon, so nothing jumps when the
+// engine takes over.
+import { href } from '../lib/paths';
+
+interface Props {
+  page: string;
+  width: number;
+  height: number;
+  start: string; // the starting colours (paint only), under assets/
+  alt: string;
+  hint?: string;
+  after?: string;
+  pick?: string;
+}
+
+const {
+  page,
+  width,
+  height,
+  start,
+  alt,
+  hint = 'Pick a crayon, then tap the picture.',
+  after = 'That’s the way. The Studio has pencil crayons, paints and glitter pens too.',
+  pick = 'Blue',
+} = Astro.props;
+
+const crayons = [
+  ['Orange', '#f18f0c'],
+  ['Yellow', '#fcd116'],
+  ['Red', '#e5432f'],
+  ['Pink', '#f29bb7'],
+  ['Blue', '#197fe1'],
+  ['Sky blue', '#8cd6f7'],
+  ['Green', '#5cb83c'],
+  ['Brown', '#a8642a'],
+];
+---
+
+<figure class="colour-me" data-colour-me data-page={page}>
+  <div class="sheet" style={`aspect-ratio: ${width} / ${height}`}>
+    <img class="paint" src={href(start)} width={width} height={height} alt="" fetchpriority="high" />
+    <canvas hidden aria-hidden="true"></canvas>
+    <img class="lines" src={href(`color/pages/${page}.png`)} width={width} height={height} alt={alt} draggable="false" />
+  </div>
+  <figcaption>
+    <div class="crayons" role="radiogroup" aria-label="Crayons">
+      {
+        crayons.map(([name, hex]) => (
+          <button
+            type="button"
+            role="radio"
+            aria-checked={name === pick ? 'true' : 'false'}
+            tabindex={name === pick ? 0 : -1}
+            aria-label={name}
+            title={name}
+            data-crayon={hex}
+            style={`--c: ${hex}`}
+          >
+            <svg viewBox="0 0 28 72" aria-hidden="true">
+              <path class="body" d="M5 71 V24 L14 3 L23 24 V71 Z" />
+              <path class="band" d="M5 31 H23 M5 60 H23" />
+            </svg>
+          </button>
+        ))
+      }
+    </div>
+    <p class="how" data-hint data-after={after}>{hint}</p>
+    <p class="tools">
+      <button class="undo" type="button" data-undo disabled>Undo</button>
+      <a data-studio href={href(`color/#${page}`)}>Keep colouring in the Studio</a>
+    </p>
+  </figcaption>
+</figure>
+
+<script type="module" is:inline src={href('color/js/colour-me.js')}></script>
+
+<style>
+  .colour-me { margin: 0; }
+  .sheet {
+    position: relative; overflow: hidden; background: #fff; border: var(--line) solid var(--ink); border-radius: 8px;
+    cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none;
+  }
+  .sheet > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .lines { mix-blend-mode: multiply; pointer-events: none; }
+  figcaption { display: grid; gap: 4px; margin-top: 14px; }
+  .crayons { display: flex; align-items: flex-end; gap: clamp(4px, 1.2vw, 10px); height: 64px; padding: 0 2px; }
+  .crayons button {
+    width: clamp(22px, 5.6vw, 30px); height: 56px; padding: 0; border: 0; background: none; cursor: pointer;
+    transform: translateY(8px); transition: transform .15s cubic-bezier(.3, .7, .4, 1.4);
+  }
+  .crayons button:hover { transform: translateY(2px); }
+  .crayons button[aria-checked='true'] { transform: translateY(-6px); }
+  .crayons svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .crayons .body { fill: var(--c); stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; }
+  .crayons .band { fill: none; stroke: var(--ink); stroke-width: 2; }
+  .how { margin: 6px 0 0; font: 650 1.05rem/1.35 var(--font-display); }
+  .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; margin: 2px 0 0; }
+  .undo {
+    padding: 4px 12px; border: 2px solid var(--ink); border-radius: 10px; background: #fff;
+    font: 650 .95rem/1.2 var(--font-display); color: var(--ink); cursor: pointer;
+  }
+  .undo:disabled { opacity: .4; cursor: default; }
+  .tools a { font-weight: 700; }
+</style>

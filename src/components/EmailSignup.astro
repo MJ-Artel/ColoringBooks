@@ -58,14 +58,15 @@ const action = mailerliteAction();
 </script>
 
 <style>
-  .signup { display: grid; gap: 10px; max-width: 34rem; }
-  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .signup { display: grid; gap: 12px; max-width: 34rem; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
   input[type='email'] {
-    flex: 1 1 14rem; min-height: 48px; padding: 0 16px; border-radius: 999px;
-    border: 1.5px solid var(--sand-2); background: #fff; font: inherit;
+    flex: 1 1 14rem; min-height: 52px; padding: 0 16px; border: var(--line) solid var(--ink); border-radius: 14px;
+    background: #fff; color: var(--ink); font: inherit;
   }
-  .consent { display: flex; gap: 10px; align-items: flex-start; font-size: var(--step--1); }
-  .consent input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--moss); }
+  input[type='email']::placeholder { color: #777; }
+  .consent { display: flex; gap: 10px; align-items: flex-start; font-size: var(--step--1); color: var(--ink-2); }
+  .consent input { flex: none; margin-top: 3px; width: 20px; height: 20px; accent-color: var(--ink); }
   .status { margin: 0; font-weight: 700; }
   .download p { margin: 8px 0 0; font-size: var(--step--1); }
 </style>

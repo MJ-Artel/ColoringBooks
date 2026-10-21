@@ -219,7 +219,7 @@ function setColour(hex) {
   const root = document.documentElement.style;
   root.setProperty('--current', prefs.colour);
   const [r, g, b] = hexToRgb(prefs.colour);
-  root.setProperty('--current-ink', 0.299 * r + 0.587 * g + 0.114 * b > 150 ? '#2b2620' : '#ffffff');
+  root.setProperty('--current-ink', 0.299 * r + 0.587 * g + 0.114 * b > 150 ? '#161616' : '#ffffff');
   $('custom').value = prefs.colour;
 }
 
@@ -766,7 +766,7 @@ async function composite() {
   out.width = W;
   out.height = H + band;
   const c = out.getContext('2d');
-  c.fillStyle = '#fffdf8';
+  c.fillStyle = '#ffffff';
   c.fillRect(0, 0, W, H + band);
   c.drawImage(canvas, 0, 0);
   c.globalCompositeOperation = 'multiply';
@@ -774,19 +774,19 @@ async function composite() {
   c.fillStyle = c.createPattern(tile, 'repeat');
   c.fillRect(0, 0, W, H);
   c.globalCompositeOperation = 'source-over';
-  c.fillStyle = '#f3ead8';
+  c.fillStyle = '#fcd116';
   c.fillRect(0, H, W, band);
-  c.fillStyle = '#e2d3b4';
-  c.fillRect(0, H, W, 2);
+  c.fillStyle = '#161616';
+  c.fillRect(0, H, W, Math.max(2, Math.round(band * 0.04)));
   const book = BOOKS[page.book];
   const title = `${page.title} · ${book.title}`;
   const credit = `A colouring book by M.J. Artel${siteLabel() ? ` · ${siteLabel()}` : ''}`;
   c.textBaseline = 'middle';
-  c.fillStyle = '#2b2620';
-  fitFont(c, title, 600, band * 0.3, 'Fraunces, Georgia, serif', W - 2 * pad);
+  c.fillStyle = '#161616';
+  fitFont(c, title, 800, band * 0.3, '"Shantell Sans", "Trebuchet MS", sans-serif', W - 2 * pad);
   c.fillText(title, pad, H + band * 0.38);
-  c.fillStyle = '#6b6257';
-  fitFont(c, credit, 600, band * 0.2, '"Nunito Sans", system-ui, sans-serif', W - 2 * pad);
+  c.fillStyle = '#161616';
+  fitFont(c, credit, 400, band * 0.2, 'Andika, system-ui, sans-serif', W - 2 * pad);
   c.fillText(credit, pad, H + band * 0.72);
   return out;
 }

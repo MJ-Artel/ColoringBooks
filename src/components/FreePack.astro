@@ -10,43 +10,49 @@ import p5 from '../../color/thumbs/robot-3.png';
 import p6 from '../../color/thumbs/cars-5.png';
 
 interface Props { heading?: string; level?: 'h1' | 'h2' }
-const { heading = 'Free colouring pack', level = 'h2' } = Astro.props;
+const { heading = 'Six free pages to print', level = 'h2' } = Astro.props;
 const Heading = level;
 const pages = [p1, p2, p3, p4, p5, p6];
 ---
 
 <section class="pack" aria-label="Free colouring pack">
+  <svg class="scissors" viewBox="0 0 48 32" aria-hidden="true">
+    <circle cx="8" cy="8" r="6" /><circle cx="8" cy="24" r="6" />
+    <path d="M13 11 L45 26 M13 21 L45 6" />
+  </svg>
   <div class="text">
-    <p class="eyebrow">Six pages · all three books · ready to print</p>
     <Heading class="title">{heading}</Heading>
     <p>
-      The torch lighting, fox soccer, a team-symbol page and a trophy from The Wildwood Games, plus Scribbles the
-      robot and a classic car. Print them for a rainy afternoon, a classroom or a party table.
+      Snappy Snapsalot lighting the torch, a fox mid-kick, a page for designing team badges and a trophy with room
+      for a name, all from The Wildwood Games, plus Scribbles the robot and a little classic car.
     </p>
     <EmailSignup />
   </div>
   <a class="pages" href={href('free-coloring-pages/')} tabindex="-1" aria-hidden="true">
-    {pages.map((p, i) => <Image src={p} alt="" width={130} style={`--i:${i}`} />)}
+    {pages.map((p, i) => <Image src={p} alt="" width={150} style={`--i:${i}`} />)}
   </a>
 </section>
 
 <style>
   .pack {
-    display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); align-items: center;
-    padding: clamp(24px, 5vw, 48px); border-radius: 24px; color: #fff;
-    background:
-      radial-gradient(circle at 85% 20%, rgba(255, 255, 255, .08), transparent 40%),
-      var(--moss-2);
+    position: relative; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 56px); align-items: center;
+    padding: clamp(28px, 5vw, 56px); border: 3px dashed var(--ink); border-radius: 22px; background: #fff;
   }
-  .title { color: #fff; margin-bottom: .4em; }
-  .eyebrow { color: var(--honey); }
-  .text :global(.muted) { color: #e3ead9; }
-  .text :global(a:not(.btn)) { color: #fff; }
-  .pages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .scissors {
+    position: absolute; top: -17px; left: clamp(20px, 5vw, 48px); width: 48px; height: 32px; padding: 0 6px;
+    background: #fff; fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round;
+  }
+  .title { margin-bottom: .35em; }
+  .text > p { max-width: 46ch; }
+  .pages { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 8px; }
   .pages img {
-    width: 100%; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 8px; padding: 6px;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, .25);
-    transform: rotate(calc((var(--i) - 2.5) * 1.6deg));
+    width: 100%; aspect-ratio: 1; object-fit: contain; padding: 6px; background: #fff;
+    border: 2px solid var(--ink); border-radius: 4px;
+    transform: rotate(calc((var(--i) - 2.5) * 1.5deg));
+    transition: transform .2s ease;
   }
+  .pages img:nth-child(even) { translate: 0 6px; }
+  .pages:hover img { transform: rotate(0); }
   @media (max-width: 860px) { .pack { grid-template-columns: minmax(0, 1fr); } }
 </style>
