@@ -1,6 +1,7 @@
 // Browser smoke test for the colouring studio: serves the site, colours a page with every tool on a desktop
 // and a phone viewport, checks autosave and the picture download, and writes screenshots.
-//   npm run smoke [-- --out <dir>]
+//   npm run smoke [-- --out <dir>] [-- --base https://mj-artel.github.io/ColoringBooks]
+// --base tests a deployed copy instead of serving this folder.
 // Needs Playwright with Chromium (`npm i -D playwright`), or PLAYWRIGHT_MODULE pointing at an install.
 
 import http from 'node:http';
@@ -28,8 +29,12 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(404).end('not found');
   }
 });
-await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
-const base = `http://127.0.0.1:${server.address().port}`;
+const baseArg = process.argv.indexOf('--base');
+let base = baseArg > 0 ? process.argv[baseArg + 1].replace(/\/$/, '') : '';
+if (!base) {
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  base = `http://127.0.0.1:${server.address().port}`;
+}
 await mkdir(out, { recursive: true });
 
 const browser = await chromium.launch();
@@ -217,7 +222,7 @@ for (const [locale, host] of [['en-US', 'www.amazon.com'], ['en-CA', 'www.amazon
 }
 
 await browser.close();
-server.close();
+if (server.listening) server.close();
 check(errors.length === 0, `no console errors${errors.length ? `: ${errors.join(' | ')}` : ''}`);
 console.log(failures.length ? `\n${failures.length} failed` : '\nall good');
 process.exit(failures.length ? 1 : 0);
