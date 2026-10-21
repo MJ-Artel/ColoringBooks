@@ -89,3 +89,14 @@ footer { text-align: center; padding: 24px 16px; color: var(--muted); }
   .top nav a { margin: 0 14px 0 0; }
   .team-grid > *, .gallery > *, .book-grid > * { min-width: 0; }
 }
+
+.feature { border-top: 2px dashed #d9e3d3; }
+.feature-head { display: grid; grid-template-columns: 260px minmax(0,1fr); gap: 32px; align-items: center; margin-bottom: 32px; }
+.feature-head img { border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,.15); }
+.feature-head h2 { text-align: left; }
+@media (max-width: 760px) {
+  .feature-head { grid-template-columns: minmax(0,1fr); text-align: center; }
+  .feature-head img { max-width: 240px; margin: 0 auto; }
+  .feature-head h2 { text-align: center; }
+  .feature .cta { justify-content: center; }
+}
