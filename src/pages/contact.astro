@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import EmailSignup from '../components/EmailSignup.astro';
+import { SITE } from '../data/site';
+import { href } from '../lib/paths';
+
+// Hidden from menus and search until SITE.contactEmail is set.
+const trail = [{ name: 'Contact', path: 'contact/' }];
+---
+
+<Base
+  title="Contact M.J. Artel"
+  description="Get in touch with M.J. Artel about the colouring books, reviews, schools and libraries."
+  noindex={!SITE.contactEmail}
+>
+  <section class="section-tight">
+    <div class="wrap prose">
+      <Breadcrumbs trail={trail} />
+      <h1>Contact</h1>
+      {
+        SITE.contactEmail ? (
+          <p class="lede">
+            For questions about the books, reviews, schools and libraries, email{' '}
+            <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>.
+          </p>
+        ) : (
+          <p class="lede">
+            A contact address is on its way. In the meantime, a review on Amazon is the best way to share what you
+            think of the books.
+          </p>
+        )
+      }
+      <h2>New pages by email</h2>
+      <p>Get the free colouring pack, and an occasional email when there are new pages or books.</p>
+      <EmailSignup />
+      <p><a href={href('privacy/')}>How your email address is used</a></p>
+    </div>
+  </section>
+</Base>

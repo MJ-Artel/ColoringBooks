@@ -1,0 +1,103 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FreePack from '../components/FreePack.astro';
+import Faq from '../components/Faq.astro';
+import { SITE } from '../data/site';
+import { href } from '../lib/paths';
+import { breadcrumbs, faqPage } from '../lib/schema';
+import { BOOKS, PAGES } from '../../color/js/pages.js';
+
+const thumbs = import.meta.glob<{ default: ImageMetadata }>('../../color/thumbs/*.png', { eager: true });
+const thumb = (id: string) => thumbs[`../../color/thumbs/${id}.png`].default;
+const groups = Object.entries(BOOKS).map(([key, book]: [string, any]) => ({
+  title: book.title,
+  pages: PAGES.filter((p: { book: string }) => p.book === key),
+}));
+
+const faq = [
+  { q: 'Can I use these pages in my classroom?', a: 'Yes. The free pages are for personal and classroom use, so print as many copies as your class needs.' },
+  { q: 'Can I share the pages?', a: 'Please share a link to this page rather than the files themselves, so other families always get the latest pack.' },
+  { q: 'Do kids need an account for the online Colouring Studio?', a: 'No. There are no accounts and nothing is uploaded: pictures are saved only in your own browser until you save or print them.' },
+  { q: 'What paper should I print on?', a: 'Plain printer paper is fine for pencil crayons and wax crayons. For felt tips, markers or paint, a heavier paper or thin card stops the colour soaking through.' },
+];
+const trail = [{ name: 'Free colouring pages', path: 'free-coloring-pages/' }];
+---
+
+<Base
+  title="Free Colouring Pages: Woodland Animals, Robots and Cars | M.J. Artel"
+  description="Free printable colouring pages from M.J. Artel’s books: a six-page pack with woodland animals, a robot and a classic car, plus 16 pages to colour online. For ages 4–10."
+  schema={[breadcrumbs(trail, Astro.site), ...faqPage(faq)]}
+>
+  <section class="section-tight">
+    <div class="wrap">
+      <Breadcrumbs trail={trail} />
+      <div class="intro">
+        <h1>Free colouring pages</h1>
+        <p class="lede">
+          Download a free pack of six printable pages from M.J. Artel’s books, or colour 16 pages right in your
+          browser. No account needed, for ages 4–10 and anyone who likes to colour.
+        </p>
+      </div>
+      <FreePack heading="The free colouring pack" />
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap single card">
+      <div>
+        <h2>Just one page, right now</h2>
+        <p>No email needed: print Snappy Snapsalot lighting the torch at the opening of the Wildwood Games.</p>
+        <a class="btn btn-ghost" href={href(SITE.freePage)} download>Print the torch page (PDF)</a>
+      </div>
+      <Image src={thumb('wildwood-5')} alt="Colouring page: Snappy Snapsalot the snapping turtle lights the ceremonial torch" width={180} />
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="online-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="online-heading">Colour online, free</h2>
+        <p>Tap a page to open it in the Colouring Studio, with pencil crayons, watercolours, markers, glitter pens and more.</p>
+      </div>
+      {
+        groups.map((g) => (
+          <div class="group">
+            <h3>{g.title}</h3>
+            <ul class="pages">
+              {g.pages.map((p: { id: string; title: string }) => (
+                <li>
+                  <a class="card" href={href(`color/#${p.id}`)}>
+                    <Image src={thumb(p.id)} alt="" width={200} />
+                    <span>{p.title}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <Faq items={faq} heading="Good to know" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro { max-width: 48rem; margin-bottom: 32px; }
+  .single { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 24px clamp(20px, 4vw, 40px); }
+  .single h2 { font-size: var(--step-3); }
+  .single img { background: #fff; border-radius: 8px; box-shadow: var(--shadow); transform: rotate(2deg); flex: none; }
+  .group { margin-bottom: 32px; }
+  .group h3 { font-size: var(--step-2); }
+  .pages { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+  .pages a { display: flex; flex-direction: column; gap: 8px; padding: 10px; height: 100%; color: var(--ink); font-weight: 700; text-decoration: none; }
+  .pages a:hover { border-color: var(--moss); }
+  .pages img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 6px; }
+  @media (max-width: 600px) { .single { flex-direction: column; text-align: center; } }
+</style>

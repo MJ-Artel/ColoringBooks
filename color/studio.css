@@ -1,5 +1,25 @@
 /* M.J. Artel Colouring Studio: a sheet of paper on a warm desk, art supplies in a wooden tray. */
 
+@font-face {
+  font-family: "Fraunces";
+  src: url("fonts/fraunces.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("fonts/nunito-sans.woff2") format("woff2");
+  font-weight: 200 1000;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("fonts/nunito-sans-italic.woff2") format("woff2");
+  font-weight: 200 1000;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   --cream: #f6efe0;
   --paper: #fffdf8;
@@ -421,6 +441,7 @@ input[type="range"]::-moz-range-thumb {
   text-decoration: none;
 }
 .buy:hover { background: var(--moss-2); }
+.see-inside { display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 800; color: var(--moss-2); }
 .small-print { margin: 0; font-size: 11.5px; color: var(--muted); }
 
 /* ---- page picker ---- */

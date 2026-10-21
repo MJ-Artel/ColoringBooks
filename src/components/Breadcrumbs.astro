@@ -1,0 +1,26 @@
+---
+import { href } from '../lib/paths';
+
+interface Props { trail: { name: string; path: string }[] }
+const { trail } = Astro.props;
+---
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href={href('')}>Home</a></li>
+    {
+      trail.map((c, i) => (
+        <li>
+          {i === trail.length - 1 ? <span aria-current="page">{c.name}</span> : <a href={href(c.path)}>{c.name}</a>}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .crumbs { font-size: var(--step--1); font-weight: 700; color: var(--muted); }
+  ol { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0 0 18px; padding: 0; }
+  li + li::before { content: "›"; margin-right: 6px; color: var(--wood-2); }
+  a { color: var(--muted); }
+</style>

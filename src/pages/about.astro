@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import BookCard from '../components/BookCard.astro';
+import { SITE } from '../data/site';
+import { href } from '../lib/paths';
+import { author, breadcrumbs } from '../lib/schema';
+
+const books = (await getCollection('books')).sort((a, b) => a.data.order - b.data.order);
+const trail = [{ name: 'About', path: 'about/' }];
+const site = Astro.site;
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    mainEntity: { ...author(site), description: 'Independent creator and producer of story-led colouring books for children aged 4–10.' },
+  },
+  breadcrumbs(trail, site),
+];
+---
+
+<Base
+  title="About M.J. Artel, Independent Colouring Book Creator"
+  description="M.J. Artel is an independent creator of story-led colouring books for children aged 4–10: The Wildwood Games, the Robot Coloring Book and the Cars Coloring Book."
+  schema={schema}
+>
+  <section class="section-tight">
+    <div class="wrap">
+      <Breadcrumbs trail={trail} />
+      <div class="prose">
+        <h1>About M.J. Artel</h1>
+        <p class="lede">
+          M.J. Artel is an independent colouring book creator and producer: one person making every book, from the
+          first idea to the finished pages.
+        </p>
+
+        <h2>Colouring books with a story</h2>
+        <p>
+          Most colouring books are a stack of unrelated pictures. M.J. Artel’s books are built around characters and a
+          story, so a child colouring the fox at the steeplechase knows who that fox is and why the race matters. Every
+          picture in The Wildwood Games and the Robot Coloring Book comes with a page of story, which makes colouring
+          time a natural moment to read together.
+        </p>
+
+        <h2>Made for small hands, and for growing ones</h2>
+        <p>
+          The books are made for ages 4–10, and any age can enjoy them. Pages use bold, clean outlines and big shapes
+          that younger children can fill confidently, with enough detail for older kids to take their time. Some pages
+          invite children to add their own ideas, like designing a symbol for each Wildwood team.
+        </p>
+
+        <h2>Local editions, and other languages</h2>
+        <p>
+          The Wildwood Games comes in two English editions: <em>A Coloring Book</em> for the United States and
+          <em>A Colouring Book</em> for Canada and the United Kingdom. Fully translated editions are available in other
+          languages too.
+        </p>
+
+        <h2>Say hello</h2>
+        <p>
+          The kindest thing you can do for an independent creator is leave an honest review on Amazon: it helps other
+          families find the books. You can also <a href={href('free-coloring-pages/')}>get the free colouring pack</a>
+          for new pages and news{SITE.contactEmail ? <>, or <a href={href('contact/')}>get in touch</a></> : ''}.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="books-heading">
+    <div class="wrap">
+      <h2 id="books-heading" class="center">The books</h2>
+      <div class="books">{books.map((b) => <BookCard book={b} />)}</div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .books { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
+  @media (max-width: 860px) { .books { grid-template-columns: minmax(0, 1fr); max-width: 420px; margin-inline: auto; } }
+</style>

@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import EmailSignup from './EmailSignup.astro';
+import { href } from '../lib/paths';
+import p1 from '../../color/thumbs/wildwood-5.png';
+import p2 from '../../color/thumbs/wildwood-29.png';
+import p3 from '../../color/thumbs/wildwood-3.png';
+import p4 from '../../color/thumbs/wildwood-73.png';
+import p5 from '../../color/thumbs/robot-3.png';
+import p6 from '../../color/thumbs/cars-5.png';
+
+interface Props { heading?: string; level?: 'h1' | 'h2' }
+const { heading = 'Free colouring pack', level = 'h2' } = Astro.props;
+const Heading = level;
+const pages = [p1, p2, p3, p4, p5, p6];
+---
+
+<section class="pack" aria-label="Free colouring pack">
+  <div class="text">
+    <p class="eyebrow">Six pages · all three books · ready to print</p>
+    <Heading class="title">{heading}</Heading>
+    <p>
+      The torch lighting, fox soccer, a team-symbol page and a trophy from The Wildwood Games, plus Scribbles the
+      robot and a classic car. Print them for a rainy afternoon, a classroom or a party table.
+    </p>
+    <EmailSignup />
+  </div>
+  <a class="pages" href={href('free-coloring-pages/')} tabindex="-1" aria-hidden="true">
+    {pages.map((p, i) => <Image src={p} alt="" width={130} style={`--i:${i}`} />)}
+  </a>
+</section>
+
+<style>
+  .pack {
+    display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); align-items: center;
+    padding: clamp(24px, 5vw, 48px); border-radius: 24px; color: #fff;
+    background:
+      radial-gradient(circle at 85% 20%, rgba(255, 255, 255, .08), transparent 40%),
+      var(--moss-2);
+  }
+  .title { color: #fff; margin-bottom: .4em; }
+  .eyebrow { color: var(--honey); }
+  .text :global(.muted) { color: #e3ead9; }
+  .text :global(a:not(.btn)) { color: #fff; }
+  .pages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .pages img {
+    width: 100%; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 8px; padding: 6px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .25);
+    transform: rotate(calc((var(--i) - 2.5) * 1.6deg));
+  }
+  @media (max-width: 860px) { .pack { grid-template-columns: minmax(0, 1fr); } }
+</style>

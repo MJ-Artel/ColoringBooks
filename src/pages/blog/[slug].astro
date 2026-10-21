@@ -1,0 +1,111 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BuyButton from '../../components/BuyButton.astro';
+import Faq from '../../components/Faq.astro';
+import FreePack from '../../components/FreePack.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { href } from '../../lib/paths';
+import { author, breadcrumbs, faqPage } from '../../lib/schema';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  return articles.map((article) => ({ params: { slug: article.id }, props: { article } }));
+}
+
+const { article } = Astro.props;
+const d = article.data;
+const { Content } = await render(article);
+const books = await getCollection('books');
+const book = books.find((b) => b.data.key === d.book)!;
+const related = (await getCollection('articles', ({ data, id }) => !data.draft && id !== article.id)).slice(0, 3);
+const trail = [{ name: 'Blog', path: 'blog/' }, { name: d.title, path: `blog/${article.id}/` }];
+const hero = await getImage({ src: d.hero, width: 1200, format: 'jpg' });
+const site = Astro.site;
+const date = (value: Date) => value.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: d.title,
+    description: d.description,
+    image: new URL(hero.src, site).toString(),
+    datePublished: d.pubDate.toISOString(),
+    dateModified: (d.updatedDate ?? d.pubDate).toISOString(),
+    author: author(site),
+    publisher: author(site),
+    mainEntityOfPage: new URL(href(`blog/${article.id}/`), site).toString(),
+  },
+  breadcrumbs(trail, site),
+  ...faqPage(d.faq),
+];
+---
+
+<Base title={`${d.seoTitle ?? d.title} | M.J. Artel`} description={d.description} image={d.hero} imageAlt={d.heroAlt} type="article" schema={schema}>
+  <article class="section-tight">
+    <div class="wrap">
+      <Breadcrumbs trail={trail} />
+      <header class="head">
+        <h1>{d.title}</h1>
+        <p class="meta">
+          By <a href={href('about/')}>M.J. Artel</a> · <time datetime={d.pubDate.toISOString()}>{date(d.pubDate)}</time>
+          {d.updatedDate && <> · updated <time datetime={d.updatedDate.toISOString()}>{date(d.updatedDate)}</time></>}
+        </p>
+      </header>
+      <div class="layout">
+        <div class="prose">
+          <Image class="hero" src={d.hero} alt={d.heroAlt} widths={[640, 960, 1280]} sizes="(max-width: 900px) 92vw, 720px" loading="eager" />
+          <Content />
+          <Faq items={d.faq} heading="Questions people ask" />
+        </div>
+        <aside class="side">
+          <div class="card promo">
+            <Image src={book.data.cover} alt="" width={220} />
+            <p class="eyebrow">From the book</p>
+            <h2><a href={href(`${book.id}/`)}>{book.data.title}</a></h2>
+            <p>{book.data.hook}</p>
+            <BuyButton book={book.data.key} stores={false} />
+            <a class="look" href={href(`${book.id}/`)}>See inside the book</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <section class="section-tight">
+    <div class="wrap"><FreePack /></div>
+  </section>
+
+  {
+    related.length > 0 && (
+      <section class="section-tight" aria-labelledby="related-heading">
+        <div class="wrap">
+          <h2 id="related-heading" class="center">More ideas</h2>
+          <div class="posts">{related.map((a) => <ArticleCard article={a} />)}</div>
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .head { max-width: var(--measure); }
+  .meta { color: var(--muted); font-weight: 700; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: clamp(24px, 5vw, 56px); align-items: start; }
+  .prose :global(.hero) { margin-top: 0; box-shadow: var(--shadow); }
+  .side { position: sticky; top: 24px; }
+  .promo { padding: 20px; text-align: center; }
+  .promo img { margin: 0 auto 12px; border-radius: 10px; box-shadow: 0 10px 22px rgba(60, 40, 20, .2); }
+  .promo h2 { font-size: var(--step-2); }
+  .promo h2 a { color: var(--ink); text-decoration: none; }
+  .promo p { color: var(--muted); }
+  .look { display: inline-block; margin-top: 12px; font-weight: 800; }
+  .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 24px; }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .side { position: static; max-width: 420px; }
+  }
+</style>

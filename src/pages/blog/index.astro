@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { breadcrumbs } from '../../lib/schema';
+
+const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const trail = [{ name: 'Blog', path: 'blog/' }];
+---
+
+<Base
+  title="Blog: Colouring, Activities and Party Ideas for Kids | M.J. Artel"
+  description="Activity ideas, free printables and party plans for kids aged 4–10, from M.J. Artel, creator of The Wildwood Games colouring book."
+  schema={[breadcrumbs(trail, Astro.site)]}
+>
+  <section class="section-tight">
+    <div class="wrap">
+      <Breadcrumbs trail={trail} />
+      <h1>The blog</h1>
+      <p class="lede">Activity ideas, free printables and party plans for kids aged 4–10.</p>
+      <div class="posts">{articles.map((a) => <ArticleCard article={a} />)}</div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lede { margin-bottom: 32px; }
+  .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+</style>

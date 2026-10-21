@@ -1,8 +1,10 @@
-// Browser smoke test for the colouring studio: serves the site, colours a page with every tool on a desktop
-// and a phone viewport, checks autosave and the picture download, and writes screenshots.
-//   npm run smoke [-- --out <dir>] [-- --base https://mj-artel.github.io/ColoringBooks]
-// --base tests a deployed copy instead of serving this folder.
-// Needs Playwright with Chromium (`npm i -D playwright`), or PLAYWRIGHT_MODULE pointing at an install.
+// Browser smoke test for the website and the Colouring Studio. Serves the built site (dist/) under the
+// GitHub Pages path, checks every page and internal link, colours pages with every tool on a desktop,
+// a tablet and a phone (with real touch input), checks autosave, downloads and the region-aware Amazon
+// buttons, and writes screenshots.
+//   npm run build && npm run smoke [-- --out <dir>] [-- --base https://mj-artel.github.io/ColoringBooks]
+// --base tests a deployed copy instead of dist/.
+// Needs Playwright with Chromium (`npx playwright install chromium`), or PLAYWRIGHT_MODULE pointing at an install.
 
 import http from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -10,30 +12,37 @@ import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
-const outArg = process.argv.indexOf('--out');
-const out = outArg > 0 ? process.argv[outArg + 1] : join(root, 'test-output');
+const arg = (name) => {
+  const i = process.argv.indexOf(name);
+  return i > 0 ? process.argv[i + 1] : undefined;
+};
+const out = arg('--out') ?? join(root, 'test-output');
+const BASE_PATH = '/ColoringBooks';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 
 const TYPES = {
   '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.jpg': 'image/jpeg',
-  '.pdf': 'application/pdf', '.svg': 'image/svg+xml',
+  '.webp': 'image/webp', '.svg': 'image/svg+xml', '.pdf': 'application/pdf', '.woff2': 'font/woff2',
+  '.xml': 'application/xml', '.txt': 'text/plain',
 };
+const dist = join(root, 'dist');
 const server = http.createServer(async (req, res) => {
-  const path = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname)).replace(/^(\.\.[/\\])+/, '');
-  const file = join(root, path.endsWith('/') ? `${path}index.html` : path);
+  const url = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  const path = url.startsWith(`${BASE_PATH}/`) ? normalize(url.slice(BASE_PATH.length)).replace(/^(\.\.[/\\])+/, '') : null;
   try {
+    if (path === null) throw new Error('outside the site');
+    const file = join(dist, path.endsWith('/') ? `${path}index.html` : path);
     const body = await readFile(file);
     res.writeHead(200, { 'content-type': TYPES[extname(file)] || 'application/octet-stream' });
     res.end(body);
   } catch {
-    res.writeHead(404).end('not found');
+    res.writeHead(404, { 'content-type': 'text/html' }).end(await readFile(join(dist, '404.html')).catch(() => 'not found'));
   }
 });
-const baseArg = process.argv.indexOf('--base');
-let base = baseArg > 0 ? process.argv[baseArg + 1].replace(/\/$/, '') : '';
+let base = arg('--base')?.replace(/\/$/, '');
 if (!base) {
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
-  base = `http://127.0.0.1:${server.address().port}`;
+  base = `http://127.0.0.1:${server.address().port}${BASE_PATH}`;
 }
 await mkdir(out, { recursive: true });
 
@@ -45,12 +54,8 @@ const check = (ok, what) => (ok ? console.log(`ok   ${what}`) : (failures.push(w
 async function open(options, hash) {
   const context = await browser.newContext(options);
   const page = await context.newPage();
-  page.on('console', (m) => {
-    if (m.type() === 'error' && !/fonts\.(googleapis|gstatic)/.test(`${m.text()} ${m.location().url}`)) errors.push(m.text());
-  });
+  page.on('console', (m) => m.type() === 'error' && errors.push(`${m.text()} (${m.location().url})`));
   page.on('pageerror', (e) => errors.push(e.message));
-  // Google Fonts may be unreachable from a sandbox; the studio must work without them.
-  await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
   const t0 = Date.now();
   await page.goto(`${base}/color/#${hash}`);
   await page.waitForSelector('body[data-ready]', { timeout: 15000 });
@@ -77,6 +82,19 @@ async function stroke(page, box, pts) {
     await page.mouse.move(x, y, { steps: 6 });
   }
   await page.mouse.up();
+}
+
+// Full-page screenshot after scrolling, so lazy-loaded images further down have loaded.
+async function fullShot(page, path) {
+  await page.evaluate(async () => {
+    for (let y = 0; y < document.body.scrollHeight; y += 600) {
+      window.scrollTo(0, y);
+      await new Promise((resolve) => setTimeout(resolve, 60));
+    }
+    window.scrollTo(0, 0);
+  });
+  await page.waitForLoadState('networkidle');
+  await page.screenshot({ path, fullPage: true });
 }
 
 const zigzag = (y, h = 0.035) => Array.from({ length: 9 }, (_, i) => [0.1 + i * 0.1, y + (i % 2 ? h : -h)]);
@@ -201,23 +219,90 @@ const zigzag = (y, h = 0.035) => Array.from({ length: 9 }, (_, i) => [0.1 + i * 
   await context.close();
 }
 
-// Landing page: buy buttons follow the visitor's Amazon; studio and free pack are linked.
+// Website: every page in the sitemap loads cleanly, every internal link, image and download works,
+// and each page describes itself for search engines.
+{
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const page = await context.newPage();
+  page.on('pageerror', (e) => errors.push(e.message));
+  page.on('console', (m) => {
+    if (m.type() === 'error' && !m.location().url.includes('/no-such-page/')) errors.push(`${m.text()} (${m.location().url})`);
+  });
+  const xml = await (await page.request.get(`${base}/sitemap-0.xml`)).text();
+  const pages = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].replace(/^https?:\/\/[^/]+\/ColoringBooks/, base));
+  check(pages.length >= 9, `sitemap lists ${pages.length} pages`);
+  const refs = new Set();
+  const problems = [];
+  for (const url of [...pages, `${base}/contact/`]) {
+    const res = await page.goto(url);
+    const name = url.slice(base.length) || '/';
+    if (!res.ok()) problems.push(`${name} returned ${res.status()}`);
+    const info = await page.evaluate(() => ({
+      title: document.title,
+      description: document.querySelector('meta[name="description"]')?.content ?? '',
+      canonical: document.querySelector('link[rel="canonical"]')?.href ?? '',
+      h1: document.querySelectorAll('h1').length,
+      noindex: Boolean(document.querySelector('meta[name="robots"][content*="noindex"]')),
+      schema: [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent)['@type']),
+      refs: [
+        ...[...document.querySelectorAll('a[href], link[href]')].map((a) => a.href),
+        ...[...document.querySelectorAll('img[src], script[src]')].map((e) => e.src),
+        ...[...document.querySelectorAll('img[srcset], source[srcset]')].flatMap((e) =>
+          e.srcset.split(',').map((part) => new URL(part.trim().split(/\s+/)[0], location.href).href)),
+      ],
+    }));
+    if (info.h1 !== 1) problems.push(`${name} has ${info.h1} h1 headings`);
+    if (info.title.length < 15 || info.title.length > 75) problems.push(`${name} title is ${info.title.length} characters`);
+    if (info.description.length < 70 || info.description.length > 170) problems.push(`${name} description is ${info.description.length} characters`);
+    if (!info.canonical.startsWith('https://mj-artel.github.io/ColoringBooks/')) problems.push(`${name} canonical is ${info.canonical}`);
+    if (/coloring-book\/$/.test(name) && !info.schema.includes('Book')) problems.push(`${name} has no Book data`);
+    if (name.includes('/blog/') && name !== '/blog/' && !info.schema.includes('Article')) problems.push(`${name} has no Article data`);
+    for (const r of info.refs) {
+      const u = new URL(r);
+      u.hash = '';
+      if (u.href.startsWith(`${base}/`) || u.href === `${base}/`) refs.add(u.href);
+    }
+  }
+  check(problems.length === 0, `pages are well formed${problems.length ? `: ${problems.join('; ')}` : ''}`);
+  const broken = [];
+  for (const r of refs) {
+    const res = await page.request.get(r);
+    if (!res.ok()) broken.push(`${r.slice(base.length)} (${res.status()})`);
+  }
+  check(broken.length === 0, `${refs.size} internal links, images and files work${broken.length ? `: ${broken.join(', ')}` : ''}`);
+  const missing = await page.goto(`${base}/no-such-page/`);
+  check(missing.status() === 404 && (await page.locator('h1').textContent()).includes('Wildwoods'), 'unknown pages get the friendly 404');
+
+  for (const [name, path] of [['home', '/'], ['book', '/wildwood-games-coloring-book/'], ['free', '/free-coloring-pages/'], ['article', '/blog/field-day-activities-for-kids/']]) {
+    await page.goto(`${base}${path}`);
+    await fullShot(page, join(out, `site-${name}.png`));
+  }
+  await context.close();
+
+  const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  const p = await phone.newPage();
+  for (const [name, path] of [['home', '/'], ['book', '/robot-coloring-book/']]) {
+    await p.goto(`${base}${path}`);
+    const overflow = await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    check(overflow <= 0, `no sideways scrolling on the ${name} page on a phone`);
+    await fullShot(p, join(out, `site-${name}-phone.png`));
+  }
+  await phone.close();
+}
+
+// Buy buttons follow the visitor's Amazon.
 for (const [locale, host] of [['en-US', 'www.amazon.com'], ['en-CA', 'www.amazon.ca'], ['en-GB', 'www.amazon.co.uk']]) {
   const context = await browser.newContext({ locale, viewport: { width: 1280, height: 900 } });
   const page = await context.newPage();
   page.on('pageerror', (e) => errors.push(e.message));
-  await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
   await page.goto(`${base}/`);
-  await page.waitForFunction(() => document.querySelector('[data-buy="robot"]').textContent !== 'Buy on Amazon');
-  const robot = await page.locator('[data-buy="robot"]').getAttribute('href');
-  const wildwood = await page.locator('[data-buy="wildwood"]').getAttribute('href');
-  check(new URL(robot).host === host, `${locale}: Robot book goes to ${new URL(robot).host}`);
+  const wildwood = await page.locator('.buy[data-buy="wildwood"] .btn-buy').first().getAttribute('href');
+  await page.goto(`${base}/robot-coloring-book/`);
+  const robot = await page.locator('.buy[data-buy="robot"] .btn-buy').first().getAttribute('href');
+  const also = await page.locator('.buy[data-buy="robot"] .buy-stores').first().textContent();
   check(new URL(wildwood).host === host, `${locale}: Wildwood goes to ${new URL(wildwood).host}`);
-  if (locale === 'en-US') {
-    await page.screenshot({ path: join(out, 'landing-desktop.png'), fullPage: true });
-    const pack = await page.request.get(`${base}/assets/mj-artel-free-colouring-pack.pdf`);
-    check(pack.ok(), 'free pack downloads');
-  }
+  check(new URL(robot).host === host, `${locale}: Robot book goes to ${new URL(robot).host}`);
+  check(!also.includes(host.replace('www.a', 'A')), `${locale}: "Also on" lists the other stores (${also.trim()})`);
   await context.close();
 }
 

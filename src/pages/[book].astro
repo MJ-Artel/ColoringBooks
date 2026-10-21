@@ -1,0 +1,144 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import BuyButton from '../components/BuyButton.astro';
+import Gallery from '../components/Gallery.astro';
+import StudioBand from '../components/StudioBand.astro';
+import Faq from '../components/Faq.astro';
+import BookCard from '../components/BookCard.astro';
+import FreePack from '../components/FreePack.astro';
+import { href } from '../lib/paths';
+import { author, breadcrumbs, faqPage } from '../lib/schema';
+import { BOOKS, PAGES } from '../../color/js/pages.js';
+
+export async function getStaticPaths() {
+  const books = await getCollection('books');
+  return books.map((book) => ({ params: { book: book.id }, props: { book } }));
+}
+
+const { book } = Astro.props;
+const d = book.data;
+const { Content } = await render(book);
+const others = (await getCollection('books')).filter((b) => b.id !== book.id).sort((a, b) => a.data.order - b.data.order);
+const studioPages = PAGES.filter((p: { book: string }) => p.book === d.key);
+const trail = [{ name: d.title, path: `${book.id}/` }];
+const coverCard = await getImage({ src: d.cover, width: 800, format: 'jpg' });
+const site = Astro.site;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Book',
+    name: d.title,
+    description: d.description,
+    author: author(site),
+    bookFormat: 'https://schema.org/Paperback',
+    numberOfPages: d.pageCount,
+    inLanguage: 'en',
+    image: new URL(coverCard.src, site).toString(),
+    url: new URL(href(`${book.id}/`), site).toString(),
+    audience: { '@type': 'PeopleAudience', suggestedMinAge: 4, suggestedMaxAge: 10 },
+    sameAs: Object.values(BOOKS[d.key].stores),
+  },
+  breadcrumbs(trail, site),
+  ...faqPage(d.faq),
+];
+---
+
+<Base title={`${d.seoTitle} | M.J. Artel`} description={d.description} image={d.cover} imageAlt={d.coverAlt} schema={schema}>
+  <section class="hero">
+    <div class="wrap grid">
+      <div class="cover">
+        <Image src={d.cover} alt={d.coverAlt} widths={[360, 540, 760]} sizes="(max-width: 860px) 80vw, 460px" loading="eager" />
+      </div>
+      <div>
+        <Breadcrumbs trail={trail} />
+        <p class="eyebrow">A colouring book by M.J. Artel</p>
+        <h1>{d.title}</h1>
+        <p class="lede">{d.hook}</p>
+        <ul class="facts">
+          <li><strong>Ages</strong> {d.ages}, and any age can enjoy it</li>
+          <li><strong>{d.pictures}</strong> pictures to colour</li>
+          <li><strong>{d.pageCount}</strong> pages · {d.trim}</li>
+        </ul>
+        <div class="actions">
+          <BuyButton book={d.key} />
+          {studioPages.length > 0 && <a class="btn btn-ghost try" href={href(`color/#${studioPages[0].id}`)}>Colour a page online</a>}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap story">
+      <div class="prose">
+        <h2>{d.key === 'cars' ? 'What’s inside' : 'The story'}</h2>
+        <Content />
+      </div>
+      <ul class="features">
+        {d.features.map((f) => <li class="card"><h3>{f.title}</h3><p>{f.text}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="inside-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="inside-heading">See inside</h2>
+        <p>A few of the pictures from {d.title}. The ones marked “Colour it online” open in the free Colouring Studio.</p>
+      </div>
+      <Gallery items={d.previews} />
+    </div>
+  </section>
+
+  {
+    studioPages.length > 0 && (
+      <StudioBand
+        page={studioPages[0].id}
+        heading={`Try ${studioPages.length} pages from this book online`}
+        intro={`Colour pages from ${d.title} in your browser before you buy, on a computer, tablet or phone. Every art supply behaves like the real thing.`}
+      />
+    )
+  }
+
+  <section class="section">
+    <div class="wrap">
+      <Faq items={d.faq} />
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="more-heading">
+    <div class="wrap">
+      <h2 id="more-heading" class="center">More books by M.J. Artel</h2>
+      <div class="more">{others.map((b) => <BookCard book={b} />)}</div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap"><FreePack /></div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: clamp(24px, 5vw, 56px) clamp(32px, 6vw, 72px); background: linear-gradient(var(--paper), var(--cream)); }
+  .grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
+  .cover img { border-radius: 14px; box-shadow: 0 24px 50px rgba(60, 40, 20, .25); transform: rotate(-1.5deg); }
+  h1 { margin-bottom: .25em; }
+  .facts { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 4px; color: var(--muted); }
+  .facts strong { color: var(--ink); }
+  .actions { align-items: flex-start; }
+  .try { margin-top: 0; }
+  .story { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 56px); align-items: start; }
+  .features { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .features li { padding: 18px 20px; }
+  .features h3 { font-size: var(--step-1); margin-bottom: .3em; }
+  .features p { margin: 0; color: var(--muted); }
+  .more { display: grid; grid-template-columns: repeat(2, minmax(0, 340px)); justify-content: center; gap: 24px; margin-top: 24px; }
+  @media (max-width: 860px) {
+    .grid, .story { grid-template-columns: minmax(0, 1fr); }
+    .cover { max-width: 260px; margin-inline: auto; }
+    .more { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

@@ -1,0 +1,177 @@
+/* M.J. Artel design system: warm paper, natural wood, muted green, honey for buying.
+   Shared with the Colouring Studio (color/studio.css), which uses the same tokens. */
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("../../color/fonts/fraunces.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("../../color/fonts/nunito-sans.woff2") format("woff2");
+  font-weight: 200 1000;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("../../color/fonts/nunito-sans-italic.woff2") format("woff2");
+  font-weight: 200 1000;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --cream: #f6efe0;
+  --paper: #fffdf8;
+  --sand: #e7d9bf;
+  --sand-2: #d6c29e;
+  --wood-1: #c99868;
+  --wood-2: #b07a4a;
+  --wood-3: #8f5f37;
+  --moss: #5e7d55;
+  --moss-2: #45613f;
+  --honey: #f2c14e;
+  --honey-2: #d9a62f;
+  --ink: #2b2620;
+  --muted: #6b6257;
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-text: "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* 1.25 scale from a 17px body */
+  --step--1: 0.8235rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.5625rem;
+  --step-3: clamp(1.6rem, 1.3rem + 1.4vw, 1.953rem);
+  --step-4: clamp(1.9rem, 1.4rem + 2.2vw, 2.441rem);
+  --step-5: clamp(2.2rem, 1.5rem + 3.2vw, 3.052rem);
+
+  --radius: 16px;
+  --shadow: 0 1px 2px rgba(60, 40, 20, .08), 0 10px 28px rgba(60, 40, 20, .12);
+  --gutter: clamp(16px, 4vw, 32px);
+  --wide: 1120px;
+  --measure: 68ch;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 17px; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font: 400 var(--step-0)/1.6 var(--font-text);
+  text-rendering: optimizeLegibility;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--moss-2); text-underline-offset: .18em; text-decoration-thickness: .08em; }
+a:hover { color: var(--ink); }
+:focus-visible { outline: 3px solid var(--moss); outline-offset: 3px; border-radius: 4px; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 650;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  margin: 0 0 .5em;
+  text-wrap: balance;
+  font-optical-sizing: auto;
+}
+h1 { font-size: var(--step-5); }
+h2 { font-size: var(--step-4); }
+h3 { font-size: var(--step-2); }
+h4 { font-size: var(--step-1); }
+p { margin: 0 0 1em; }
+p, li { text-wrap: pretty; }
+
+.wrap { width: min(var(--wide), 100% - 2 * var(--gutter)); margin-inline: auto; }
+.section { padding-block: clamp(48px, 7vw, 88px); }
+.section-tight { padding-block: clamp(32px, 5vw, 56px); }
+.eyebrow {
+  margin: 0 0 .5rem;
+  font: 800 var(--step--1)/1.3 var(--font-text);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--moss-2);
+}
+.lede { font-size: var(--step-1); color: var(--ink); max-width: 40ch; }
+.muted { color: var(--muted); }
+.center { text-align: center; }
+.section-head { max-width: 46rem; margin: 0 auto clamp(24px, 4vw, 40px); text-align: center; }
+.section-head p { color: var(--muted); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5em;
+  min-height: 48px;
+  padding: .7em 1.4em;
+  border-radius: 999px;
+  border: 0;
+  font: 800 var(--step-0)/1.2 var(--font-text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-buy { background: var(--honey); color: var(--ink); box-shadow: 0 3px 0 var(--honey-2); }
+.btn-buy:hover { color: var(--ink); background: #f5ca63; }
+.btn-primary { background: var(--moss); color: #fff; box-shadow: 0 3px 0 var(--moss-2); }
+.btn-primary:hover { color: #fff; background: var(--moss-2); }
+.btn-ghost { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--sand-2); }
+.btn-ghost:hover { color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--wood-2); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--sand);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.wood-rule {
+  height: 6px;
+  background:
+    repeating-linear-gradient(92deg, rgba(255, 255, 255, .07) 0 2px, transparent 2px 12px),
+    linear-gradient(90deg, var(--wood-1), var(--wood-2) 60%, var(--wood-3));
+}
+
+.prose { max-width: var(--measure); font-size: 1.059rem; }
+.prose h2 { font-size: var(--step-3); margin-top: 1.8em; }
+.prose h3 { font-size: var(--step-1); margin-top: 1.5em; }
+.prose ul, .prose ol { padding-left: 1.3em; }
+.prose li { margin: .35em 0; }
+.prose img {
+  width: auto;
+  max-width: min(100%, 520px);
+  max-height: 520px;
+  margin: 1.5em auto .5em;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+.prose img + em, .prose p:has(> img) + p > em:only-child { display: block; text-align: center; color: var(--muted); }
+.prose blockquote {
+  margin: 1.5em 0;
+  padding: .8em 1.2em;
+  border-left: 4px solid var(--wood-2);
+  background: var(--paper);
+  border-radius: 0 12px 12px 0;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip {
+  position: absolute; left: 12px; top: -60px; z-index: 50;
+  padding: 10px 16px; border-radius: 10px; background: var(--ink); color: var(--paper); font-weight: 800;
+}
+.skip:focus { top: 12px; color: var(--paper); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

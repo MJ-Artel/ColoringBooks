@@ -375,6 +375,7 @@ function showPageInfo() {
   $('bookTitle').textContent = book.title;
   $('bookBlurb').textContent = book.blurb;
   $('bookBuy').href = storeLink(book, navigator.language);
+  $('bookPage').href = book.page;
   document.title = `${page.title} | M.J. Artel Colouring Studio`;
 }
 

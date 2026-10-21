@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE, mailerliteAction } from '../data/site';
+import { href } from '../lib/paths';
+import { breadcrumbs } from '../lib/schema';
+
+const trail = [{ name: 'Privacy', path: 'privacy/' }];
+const updated = 'October 2026';
+---
+
+<Base
+  title="Privacy and Affiliate Disclosure | M.J. Artel"
+  description="How the M.J. Artel website handles your information: no tracking cookies, no accounts, colouring saved only in your browser, and email only if you ask for it."
+  schema={[breadcrumbs(trail, Astro.site)]}
+>
+  <section class="section-tight">
+    <div class="wrap prose">
+      <Breadcrumbs trail={trail} />
+      <h1>Privacy</h1>
+      <p class="lede">The short version: no accounts, no tracking cookies, and your child’s colouring never leaves your device.</p>
+      <p class="muted">Last updated {updated}.</p>
+
+      <h2>The Colouring Studio</h2>
+      <p>
+        Pictures coloured in the <a href={href('color/')}>Colouring Studio</a> are saved only in your own browser, so
+        you can come back to them later. They are never uploaded. Clearing your browser’s data for this site removes
+        them. Saving or printing a picture happens on your device too.
+      </p>
+
+      <h2>Cookies and analytics</h2>
+      {
+        SITE.cloudflareBeacon ? (
+          <p>
+            This site uses Cloudflare Web Analytics to count visits. It does not use cookies, does not track you across
+            other sites, and does not collect personal information.
+          </p>
+        ) : (
+          <p>This site does not use cookies or analytics.</p>
+        )
+      }
+
+      <h2>Email</h2>
+      {
+        mailerliteAction() ? (
+          <p>
+            If you sign up for the free colouring pack, your email address is stored by MailerLite, our email provider,
+            and used only to send the pack and occasional emails about new pages and books. Every email has an
+            unsubscribe link, and you can ask for your address to be deleted at any time. Sign-up is for adults
+            (parents, carers and teachers); we don’t knowingly collect information from children.
+          </p>
+        ) : (
+          <p>The site doesn’t collect email addresses. If that changes, this page will explain how they’re used first.</p>
+        )
+      }
+
+      <h2>Links to Amazon</h2>
+      {
+        SITE.amazonAssociate ? (
+          <p>
+            M.J. Artel is a participant in the Amazon Associates Program. As an Amazon Associate I earn from qualifying
+            purchases made through links on this site, at no extra cost to you.
+          </p>
+        ) : (
+          <p>
+            The books are sold on Amazon. Links to Amazon are ordinary links: this site doesn’t earn a commission from
+            them. If that changes, this page and the footer of every page will say so.
+          </p>
+        )
+      }
+      <p>Amazon’s own privacy notice applies once you’re on Amazon’s website.</p>
+
+      <h2>Fonts and other services</h2>
+      <p>Fonts and images are served from this website itself, so loading a page doesn’t send your details to font or image services.</p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { href } from '../lib/paths';
+
+interface Props {
+  items: { image: ImageMetadata; caption: string; alt: string; studio?: string }[];
+}
+const { items } = Astro.props;
+---
+
+<div class="gallery">
+  {
+    items.map((p) => (
+      <figure class="card">
+        <Image src={p.image} alt={p.alt} widths={[320, 480, 680]} sizes="(max-width: 600px) 45vw, 340px" />
+        <figcaption>
+          <span>{p.caption}</span>
+          {p.studio && <a class="colour-it" href={href(`color/#${p.studio}`)}>Colour it online</a>}
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>
+
+<style>
+  .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 2vw, 22px); }
+  figure { margin: 0; padding: 12px; display: flex; flex-direction: column; }
+  img { border-radius: 8px; background: #fff; }
+  figcaption {
+    display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 10px;
+    font-weight: 700; color: var(--muted); text-align: center;
+  }
+  .colour-it {
+    padding: 4px 12px; border-radius: 999px; background: #eaf1e5; color: var(--moss-2);
+    font-size: var(--step--1); font-weight: 800; text-decoration: none;
+  }
+  .colour-it:hover { background: var(--moss); color: #fff; }
+  @media (max-width: 760px) { .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

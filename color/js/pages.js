@@ -10,7 +10,7 @@ export const BOOKS = {
       ca: 'https://www.amazon.ca/dp/B0GNZSL2VB',
       uk: 'https://www.amazon.co.uk/dp/B0GNZSL2VB',
     },
-    anchor: '../#inside',
+    page: '../wildwood-games-coloring-book/',
   },
   robot: {
     title: 'Robot Coloring Book',
@@ -21,7 +21,7 @@ export const BOOKS = {
       ca: 'https://www.amazon.ca/dp/B0BMSVSS66',
       uk: 'https://www.amazon.co.uk/dp/B0BMSVSS66',
     },
-    anchor: '../#robots',
+    page: '../robot-coloring-book/',
   },
   cars: {
     title: 'Cars Coloring Book',
@@ -32,7 +32,7 @@ export const BOOKS = {
       ca: 'https://www.amazon.ca/dp/B0BRQ644RV',
       uk: 'https://www.amazon.co.uk/dp/B0BRQ644RV',
     },
-    anchor: '../#cars',
+    page: '../cars-coloring-book/',
   },
 };
 

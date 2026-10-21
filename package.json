@@ -3,8 +3,23 @@
   "private": true,
   "description": "Website and online colouring studio for M.J. Artel's colouring books",
   "type": "module",
+  "engines": {
+    "node": ">=22.22.0"
+  },
   "scripts": {
-    "test": "node --test",
+    "sync": "node scripts/sync-public.mjs",
+    "dev": "node scripts/sync-public.mjs && astro dev",
+    "build": "node scripts/sync-public.mjs && astro build",
+    "preview": "astro preview",
+    "test": "node --test \"test/*.test.js\"",
     "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.4.1",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
   }
 }

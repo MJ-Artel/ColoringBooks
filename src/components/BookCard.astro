@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { href } from '../lib/paths';
+
+interface Props { book: CollectionEntry<'books'> }
+const { book } = Astro.props;
+const d = book.data;
+const url = href(`${book.id}/`);
+---
+
+<article class="book card">
+  <a class="cover" href={url} tabindex="-1" aria-hidden="true">
+    {d.newest && <span class="ribbon">Newest</span>}
+    <Image src={d.cover} alt="" widths={[280, 420, 560]} sizes="(max-width: 760px) 80vw, 340px" />
+  </a>
+  <div class="body">
+    <h3><a href={url}>{d.title}</a></h3>
+    <p>{d.hook}</p>
+    <p class="facts">Ages {d.ages} · {d.pageCount} pages · {d.pictures} pictures</p>
+    <a class="btn btn-ghost" href={url}>See inside</a>
+  </div>
+</article>
+
+<style>
+  .book { display: flex; flex-direction: column; overflow: hidden; }
+  .cover { position: relative; display: block; padding: 18px 18px 0; background: var(--cream); }
+  .cover img { border-radius: 10px; box-shadow: 0 10px 24px rgba(60, 40, 20, .2); aspect-ratio: 1; object-fit: cover; width: 100%; }
+  .ribbon {
+    position: absolute; top: 28px; left: 8px; z-index: 1; padding: 4px 12px; border-radius: 0 999px 999px 0;
+    background: var(--honey); font-weight: 800; font-size: var(--step--1); box-shadow: 0 2px 0 var(--honey-2);
+  }
+  .body { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px 22px; flex: 1; }
+  h3 { margin: 0; font-size: var(--step-2); }
+  h3 a { color: var(--ink); text-decoration: none; }
+  h3 a:hover { text-decoration: underline; }
+  p { margin: 0; }
+  .facts { color: var(--muted); font-size: var(--step--1); font-weight: 700; margin-bottom: 10px; }
+  .btn { margin-top: auto; align-self: flex-start; }
+</style>

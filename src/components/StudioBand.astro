@@ -1,0 +1,43 @@
+---
+import { Image } from 'astro:assets';
+import { href } from '../lib/paths';
+import shot from '../../assets/studio-preview.jpg';
+
+interface Props { page?: string; heading?: string; intro?: string }
+const {
+  page = 'wildwood-73',
+  heading = 'Colour a page right here',
+  intro = 'Pick a page from any of the three books and colour it in your browser, on a computer, tablet or phone. Every art supply behaves like the real thing.',
+} = Astro.props;
+---
+
+<section class="studio section" aria-labelledby="studio-heading">
+  <div class="wrap grid">
+    <div>
+      <p class="eyebrow">Free · no sign-up · works on tablets</p>
+      <h2 id="studio-heading">{heading}</h2>
+      <p>{intro}</p>
+      <ul>
+        <li><strong>Pencil crayons</strong> and <strong>wax crayons</strong> that catch the paper’s grain</li>
+        <li><strong>Watercolours</strong> that dry with soft, darker edges</li>
+        <li><strong>Felt tips</strong> and <strong>alcohol markers</strong> that layer and blend</li>
+        <li><strong>Glitter gel pens</strong>, a pencil, a paint bucket and an eraser</li>
+      </ul>
+      <p class="muted">Little hands can switch on <em>Stay inside the lines</em>. Finished pictures can be saved or printed.</p>
+      <a class="btn btn-primary" href={href(`color/#${page}`)}>Open the Colouring Studio</a>
+    </div>
+    <a class="shot" href={href(`color/#${page}`)} tabindex="-1" aria-hidden="true">
+      <Image src={shot} alt="" widths={[600, 900, 1360]} sizes="(max-width: 900px) 92vw, 620px" />
+    </a>
+  </div>
+</section>
+
+<style>
+  .studio { background: var(--paper); border-block: 1px solid var(--sand); }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(24px, 5vw, 56px); align-items: center; }
+  ul { padding-left: 1.2em; margin: 0 0 1em; }
+  li { margin: 4px 0; }
+  .shot img { border-radius: 14px; box-shadow: var(--shadow); transition: transform .15s ease; }
+  .shot:hover img { transform: translateY(-3px); }
+  @media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } .shot { order: -1; } }
+</style>

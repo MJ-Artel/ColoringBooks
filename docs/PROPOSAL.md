@@ -1,8 +1,7 @@
-# M.J. Artel website: proposal for approval
+# M.J. Artel website: plan
 
-**Status:** waiting for Andre's approval. Nothing below gets built until it's approved.
-**Today:** a one-page site, the free colouring pack and the Colouring Studio (`/color/`) are live on GitHub Pages.
-The Astro rebuild described here replaces the one-page site. The studio carries over unchanged.
+**Status:** approved by Andre (ages 4–10, "and any age can enjoy them"; email via MailerLite). Built with Astro;
+see the README for how it's put together and what's still to switch on.
 
 ## Positioning
 

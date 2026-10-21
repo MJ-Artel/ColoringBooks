@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/paths';
+---
+
+<Base title="Page not found | M.J. Artel" description="This page wandered off into the Wildwoods." noindex>
+  <section class="section">
+    <div class="wrap center">
+      <p class="eyebrow">Page not found</p>
+      <h1>This page wandered off into the Wildwoods</h1>
+      <p class="lede" style="margin-inline: auto">It may have moved, or the address may have a typo. These are good places to start:</p>
+      <div class="actions" style="justify-content: center">
+        <a class="btn btn-primary" href={href('')}>Home</a>
+        <a class="btn btn-ghost" href={href('color/')}>Colouring Studio</a>
+        <a class="btn btn-ghost" href={href('free-coloring-pages/')}>Free pages</a>
+      </div>
+    </div>
+  </section>
+</Base>

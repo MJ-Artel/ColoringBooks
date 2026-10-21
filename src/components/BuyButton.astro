@@ -1,0 +1,73 @@
+---
+// One clear Amazon button that follows the visitor's country (set in the browser), with the other
+// stores in small print. Store links live in color/js/pages.js, shared with the Colouring Studio.
+import { BOOKS } from '../../color/js/pages.js';
+import { SITE } from '../data/site';
+
+interface Props {
+  book: 'wildwood' | 'robot' | 'cars';
+  label?: string;
+  stores?: boolean;
+}
+
+const { book, label, stores = true } = Astro.props;
+const urls: Record<string, string> = BOOKS[book].stores;
+const storeName = (url: string) => {
+  const host = new URL(url).hostname.replace(/^www\./, '');
+  return host.charAt(0).toUpperCase() + host.slice(1);
+};
+const primary = urls.us || urls.ca;
+const others = Object.values(urls).filter((u) => u !== primary);
+const rel = SITE.amazonAssociate ? 'sponsored noopener' : 'noopener';
+---
+
+<div class="buy" data-buy={book} data-label={label ?? ''}>
+  <a class="btn btn-buy" href={primary} target="_blank" rel={rel}>{label ?? `Buy on ${storeName(primary)}`}</a>
+  {
+    stores && others.length > 0 && (
+      <p class="buy-stores">
+        Also on{' '}
+        {others.map((u, i) => (
+          <>
+            {i > 0 && ' · '}
+            <a href={u} target="_blank" rel={rel}>{storeName(u)}</a>
+          </>
+        ))}
+      </p>
+    )
+  }
+</div>
+
+<script>
+  import { BOOKS, storeLink } from '../../color/js/pages.js';
+
+  const storeName = (url: string) => {
+    const host = new URL(url).hostname.replace(/^www\./, '');
+    return host.charAt(0).toUpperCase() + host.slice(1);
+  };
+
+  for (const box of document.querySelectorAll<HTMLElement>('.buy[data-buy]')) {
+    const book = BOOKS[box.dataset.buy as keyof typeof BOOKS];
+    const button = box.querySelector<HTMLAnchorElement>('.btn-buy');
+    if (!book || !button) continue;
+    button.href = storeLink(book, navigator.language);
+    if (!box.dataset.label) button.textContent = `Buy on ${storeName(button.href)}`;
+    const also = box.querySelector('.buy-stores');
+    if (!also) continue;
+    const others = (Object.values(book.stores) as string[]).filter((u) => u !== button.href);
+    also.replaceChildren(
+      ...(others.length ? ['Also on '] : []),
+      ...others.flatMap((url, i) => {
+        const a = Object.assign(document.createElement('a'), { href: url, target: '_blank', rel: button.rel });
+        a.textContent = storeName(url);
+        return i ? [' · ', a] : [a];
+      }),
+    );
+  }
+</script>
+
+<style>
+  .buy { display: inline-flex; flex-direction: column; gap: 6px; }
+  .buy-stores { margin: 0; font-size: var(--step--1); color: var(--muted); }
+  .buy-stores a { font-weight: 800; }
+</style>

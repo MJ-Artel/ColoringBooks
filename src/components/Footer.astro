@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import { SITE } from '../data/site';
+import { href } from '../lib/paths';
+
+const books = (await getCollection('books')).sort((a, b) => a.data.order - b.data.order);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wood-rule"></div>
+  <div class="wrap cols">
+    <div>
+      <p class="name">M.J. Artel</p>
+      <p class="muted">Story-led colouring books for curious kids. {SITE.agesNote}</p>
+    </div>
+    <nav aria-label="Books">
+      <h2>Books</h2>
+      <ul>{books.map((b) => <li><a href={href(`${b.id}/`)}>{b.data.title}</a></li>)}</ul>
+    </nav>
+    <nav aria-label="Colour">
+      <h2>Colour</h2>
+      <ul>
+        <li><a href={href('color/')}>Colouring Studio</a></li>
+        <li><a href={href('free-coloring-pages/')}>Free colouring pages</a></li>
+        <li><a href={href('blog/')}>Blog</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="About">
+      <h2>About</h2>
+      <ul>
+        <li><a href={href('about/')}>About M.J. Artel</a></li>
+        {SITE.contactEmail && <li><a href={href('contact/')}>Contact</a></li>}
+        <li><a href={href('privacy/')}>Privacy</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap legal">
+    <p>© {year} M.J. Artel. Colouring pages are free to print for personal and classroom use.</p>
+    {SITE.amazonAssociate && <p>As an Amazon Associate I earn from qualifying purchases.</p>}
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--paper); margin-top: clamp(48px, 7vw, 88px); }
+  .cols {
+    display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 32px;
+    padding-block: 40px 24px;
+  }
+  .name { font: 700 1.4rem/1 var(--font-display); margin-bottom: .5rem; }
+  h2 { font: 800 var(--step--1)/1.3 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { margin: 6px 0; }
+  a { font-weight: 700; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .legal { padding-block: 16px 32px; border-top: 1px solid var(--sand); font-size: var(--step--1); color: var(--muted); }
+  .legal p { margin: 4px 0; }
+  @media (max-width: 760px) {
+    .cols { grid-template-columns: 1fr 1fr; }
+    .cols > div:first-child { grid-column: 1 / -1; }
+  }
+</style>

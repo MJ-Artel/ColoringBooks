@@ -1,0 +1,125 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import BuyButton from '../components/BuyButton.astro';
+import BookCard from '../components/BookCard.astro';
+import StudioBand from '../components/StudioBand.astro';
+import FreePack from '../components/FreePack.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { SITE } from '../data/site';
+import { href } from '../lib/paths';
+import { author } from '../lib/schema';
+import cover from '../../assets/wildwood-cover.jpg';
+
+const books = (await getCollection('books')).sort((a, b) => a.data.order - b.data.order);
+const articles = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+const site = Astro.site;
+
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE.name, url: new URL(href(''), site).toString(), description: SITE.description },
+  { '@context': 'https://schema.org', ...author(site), description: 'Independent creator of story-led colouring books for children.' },
+];
+---
+
+<Base title="M.J. Artel · Story-Led Colouring Books for Kids 4–10" description={SITE.description} schema={schema}>
+  <section class="hero">
+    <div class="wrap grid">
+      <div>
+        <p class="eyebrow">Colouring books by M.J. Artel</p>
+        <h1>{SITE.tagline}</h1>
+        <p class="lede">
+          Every picture comes with a story: woodland animals at their very own games, a tiny robot who collects
+          colouring books, and a garage full of cars.
+        </p>
+        <div class="actions">
+          <BuyButton book="wildwood" label="Buy The Wildwood Games" />
+          <a class="btn btn-ghost" href={href('color/#wildwood-29')}>Colour a page online</a>
+        </div>
+        <p class="ages">{SITE.agesNote}</p>
+      </div>
+      <a class="cover" href={href('wildwood-games-coloring-book/')} aria-label="The Wildwood Games: see inside">
+        <span class="badge">Newest</span>
+        <Image src={cover} alt="The Wildwood Games cover: a bear, a wolf, an eagle and a fox on a winners’ podium" widths={[380, 560, 760]} sizes="(max-width: 860px) 80vw, 480px" loading="eager" />
+      </a>
+    </div>
+  </section>
+
+  <section id="books" class="section" aria-labelledby="books-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="books-heading">The books</h2>
+        <p>Three books, each with its own cast of characters. Look inside each one, or try a few pages online first.</p>
+      </div>
+      <div class="books">{books.map((b) => <BookCard book={b} />)}</div>
+    </div>
+  </section>
+
+  <StudioBand />
+
+  <section class="section">
+    <div class="wrap"><FreePack /></div>
+  </section>
+
+  {
+    articles.length > 0 && (
+      <section class="section-tight" aria-labelledby="blog-heading">
+        <div class="wrap">
+          <div class="section-head">
+            <h2 id="blog-heading">Ideas for screen-light afternoons</h2>
+            <p>Activities, printables and party ideas from the M.J. Artel blog.</p>
+          </div>
+          <div class="posts">{articles.map((a) => <ArticleCard article={a} />)}</div>
+          <p class="center"><a class="btn btn-ghost" href={href('blog/')}>All articles</a></p>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section-tight">
+    <div class="wrap about card">
+      <div>
+        <h2>Made by one person, with care</h2>
+        <p>
+          M.J. Artel is an independent colouring book creator and producer: one person making every book, from the
+          first idea to the finished pages. If one of these books has made someone happy, a review on Amazon helps
+          more than you’d think.
+        </p>
+        <a href={href('about/')}>More about M.J. Artel</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(32px, 6vw, 80px);
+    background:
+      radial-gradient(ellipse at 80% 10%, rgba(242, 193, 78, .18), transparent 45%),
+      linear-gradient(var(--paper), var(--cream));
+  }
+  .grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
+  h1 { max-width: 15ch; }
+  .lede { margin-bottom: 28px; }
+  .actions { align-items: flex-start; }
+  .ages { margin-top: 18px; color: var(--muted); font-weight: 700; }
+  .cover { position: relative; display: block; }
+  .cover img { border-radius: 16px; box-shadow: 0 26px 56px rgba(60, 40, 20, .28); transform: rotate(2deg); transition: transform .2s ease; }
+  .cover:hover img { transform: rotate(0deg) translateY(-4px); }
+  .badge {
+    position: absolute; z-index: 1; top: -12px; left: -8px; padding: 6px 14px; border-radius: 999px;
+    background: var(--honey); font-weight: 800; box-shadow: 0 3px 0 var(--honey-2); transform: rotate(-6deg);
+  }
+  .books { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.5vw, 28px); }
+  .posts { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 360px)); justify-content: center; gap: 24px; margin-bottom: 24px; }
+  .about { padding: clamp(24px, 4vw, 40px); max-width: 52rem; margin-inline: auto; text-align: center; }
+  .about p { color: var(--muted); }
+  .about a { font-weight: 800; }
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: minmax(0, 1fr); }
+    .cover { max-width: 250px; margin-inline: auto; order: -1; }
+    .books { grid-template-columns: minmax(0, 1fr); max-width: 420px; margin-inline: auto; }
+  }
+</style>

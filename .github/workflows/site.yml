@@ -1,0 +1,81 @@
+name: Build and deploy the site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Engine tests
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Browser checks (pages, links, studio, buy buttons)
+        run: |
+          npx playwright install --with-deps chromium
+          npm run smoke
+      - name: Keep screenshots
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshots
+          path: test-output/
+          retention-days: 7
+          if-no-files-found: ignore
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  # Publishing waits until Settings > Pages > Source is set to "GitHub Actions". Until then the
+  # site keeps being served straight from the repository, and this job says so instead of failing.
+  pages-source:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: read
+    outputs:
+      mode: ${{ steps.mode.outputs.mode }}
+    steps:
+      - id: mode
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mode=$(gh api "repos/${{ github.repository }}/pages" --jq .build_type 2>/dev/null || echo none)
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          if [ "$mode" != "workflow" ]; then
+            echo "::notice::GitHub Pages is set to '$mode'. Switch Settings > Pages > Source to 'GitHub Actions' to publish this build."
+          fi
+
+  deploy:
+    needs: [build, pages-source]
+    if: needs.pages-source.outputs.mode == 'workflow'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

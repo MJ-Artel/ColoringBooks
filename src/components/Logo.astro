@@ -1,0 +1,15 @@
+---
+// A pencil crayon with a honey-coloured tip: the brand mark, also used as the favicon.
+interface Props { size?: number }
+const { size = 30 } = Astro.props;
+---
+
+<svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
+  <g transform="rotate(-40 24 24)" stroke="#3b2f25" stroke-width="1.6" stroke-linejoin="round">
+    <path d="M4 24 L13 19 V29 Z" fill="#ecc9a0" />
+    <path d="M4 24 L7.8 22 V26 Z" fill="#f2c14e" stroke="none" />
+    <rect x="13" y="19" width="27" height="10" fill="#5e7d55" />
+    <rect x="13.8" y="19.8" width="25.4" height="2.6" fill="#fff" opacity=".25" stroke="none" />
+    <rect x="40" y="19" width="4.5" height="10" rx="1" fill="#45613f" />
+  </g>
+</svg>
