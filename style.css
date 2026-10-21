@@ -46,6 +46,8 @@ h1 { font-size: clamp(2.4rem, 7vw, 4rem); margin: 8px 0 16px; color: var(--fores
 }
 .btn:hover { transform: translateY(1px); box-shadow: 0 3px 0 #c99a1e; }
 .btn.ghost { background: #fff; box-shadow: 0 4px 0 #cfd8cf; }
+.stores { margin: -12px 0 8px; font-size: .95rem; color: var(--muted); }
+.stores a { color: var(--forest); font-weight: 700; }
 .facts { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--muted); }
 .facts li::before { content: "✓ "; color: var(--leaf); font-weight: 700; }
 
@@ -61,6 +63,25 @@ h1 { font-size: clamp(2.4rem, 7vw, 4rem); margin: 8px 0 16px; color: var(--fores
 .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .gallery figure { margin: 0; background: #fff; border-radius: var(--radius); padding: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.08); }
 .gallery figcaption { text-align: center; font-weight: 700; margin-top: 8px; color: var(--muted); }
+.gallery figure { display: flex; flex-direction: column; }
+.colour-link {
+  align-self: center; margin-top: 6px; padding: 4px 12px; border-radius: 999px;
+  background: #eef5e9; color: var(--forest); font-weight: 700; font-size: .9rem; text-decoration: none;
+}
+.colour-link:hover { background: var(--leaf); color: #fff; }
+
+.studio-promo {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 40px; align-items: center;
+}
+.studio-promo h2 { text-align: left; }
+.studio-promo .eyebrow { margin-bottom: 4px; }
+.supplies { padding-left: 1.2em; }
+.supplies li { margin: 4px 0; }
+.studio-shot img { border-radius: 14px; box-shadow: 0 18px 40px rgba(0,0,0,.18); }
+.studio-shot:hover img { transform: translateY(-2px); }
+.free .fine { margin: 10px 0 0; font-size: .9rem; opacity: .85; }
+footer a { color: var(--forest); font-weight: 700; }
+footer p { margin: 6px 0 0; }
 
 .free {
   display: flex; align-items: center; justify-content: space-between; gap: 32px;
@@ -86,6 +107,10 @@ footer { text-align: center; padding: 24px 16px; color: var(--muted); }
   .gallery, .book-grid { grid-template-columns: 1fr 1fr; }
   .free { flex-direction: column; text-align: center; }
   .free h2 { text-align: center; }
+  .studio-promo { grid-template-columns: minmax(0, 1fr); }
+  .studio-promo h2 { text-align: center; }
+  .studio-text { text-align: center; }
+  .supplies { text-align: left; }
   .top nav a { margin: 0 14px 0 0; }
   .team-grid > *, .gallery > *, .book-grid > * { min-width: 0; }
 }

@@ -1,0 +1,10 @@
+{
+  "name": "mj-artel-coloring-books",
+  "private": true,
+  "description": "Website and online colouring studio for M.J. Artel's colouring books",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "smoke": "node scripts/smoke.mjs"
+  }
+}

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Colouring Studio | M.J. Artel</title>
+<meta name="description" content="Colour pages from The Wildwood Games, the Robot Coloring Book and the Cars Coloring Book online, free: pencil crayons, wax crayons, watercolours, felt tips, alcohol markers and glitter pens.">
+<meta property="og:title" content="M.J. Artel Colouring Studio">
+<meta property="og:description" content="Colour real pages from M.J. Artel's colouring books right in your browser.">
+<meta property="og:image" content="https://mj-artel.github.io/ColoringBooks/color/og-image.jpg">
+<meta name="theme-color" content="#f6efe0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+<div class="studio">
+  <header class="bar">
+    <a class="brand" href="../" title="Back to M.J. Artel's books">M.J. Artel <small>Colouring Studio</small></a>
+    <button class="page-btn" type="button" data-action="pages" aria-haspopup="dialog">
+      <img id="pageThumb" alt="" width="36" height="36">
+      <span><span id="pageTitle">Loading…</span><small id="pageBook"></small></span>
+      <span class="page-btn-cta">Change page</span>
+    </button>
+    <div class="actions">
+      <button class="icon-btn" type="button" data-action="undo" aria-label="Undo" title="Undo (Ctrl+Z)" disabled></button>
+      <button class="icon-btn" type="button" data-action="redo" aria-label="Redo" title="Redo (Ctrl+Shift+Z)" disabled></button>
+      <span class="wide-only sep"></span>
+      <button class="icon-btn wide-only" type="button" data-action="zoomOut" aria-label="Zoom out" title="Zoom out (-)"></button>
+      <button class="icon-btn wide-only" type="button" data-action="fit" aria-label="Fit page to screen" title="Fit page (0)"></button>
+      <button class="icon-btn wide-only" type="button" data-action="zoomIn" aria-label="Zoom in" title="Zoom in (+)"></button>
+      <span class="wide-only sep"></span>
+      <button class="text-btn wide-only" type="button" data-action="save" data-icon="save">Save picture</button>
+      <button class="text-btn wide-only" type="button" data-action="print" data-icon="print">Print</button>
+      <button class="text-btn wide-only" type="button" data-action="clear" data-icon="clear">Start over</button>
+      <details class="menu narrow-only">
+        <summary class="icon-btn" aria-label="More actions"></summary>
+        <div class="menu-list">
+          <button type="button" data-action="save" data-icon="save">Save picture</button>
+          <button type="button" data-action="print" data-icon="print">Print</button>
+          <button type="button" data-action="fit" data-icon="fit">Fit page to screen</button>
+          <button type="button" data-action="clear" data-icon="clear">Start over</button>
+          <a href="../" data-icon="book">All books</a>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <nav class="tray" aria-label="Art supplies">
+    <div class="tools" id="tools" role="radiogroup" aria-label="Art supplies"></div>
+  </nav>
+
+  <main class="stage" id="stage" aria-label="Colouring page">
+    <div class="sheet" id="sheet">
+      <canvas id="paint"></canvas>
+      <img id="lines" alt="" draggable="false">
+      <div class="tooth" id="tooth"></div>
+    </div>
+    <div class="brush-cursor" id="cursor" hidden></div>
+    <p class="loading" id="loading">Sharpening pencils…</p>
+  </main>
+
+  <aside class="panel" aria-label="Colours and settings">
+    <section class="colours">
+      <div class="panel-head">
+        <h2>Colours</h2>
+        <select id="palette" aria-label="Colour set"></select>
+      </div>
+      <div class="swatch-row">
+        <label class="swatch custom" title="Mix your own colour">
+          <input type="color" id="custom" aria-label="Mix your own colour">
+        </label>
+        <div class="swatches" id="swatches" role="radiogroup" aria-label="Colours"></div>
+      </div>
+      <div class="recent-wrap" id="recentWrap" hidden>
+        <h3>Recently used</h3>
+        <div class="recent" id="recent"></div>
+      </div>
+      <p class="note" id="graphiteNote" hidden>The pencil is always graphite grey. Press harder, or go over it again, for darker shading.</p>
+    </section>
+
+    <section class="settings">
+      <div class="field" id="sizeField">
+        <label for="size">Size</label>
+        <input type="range" id="size" min="0" max="100">
+        <span class="size-dot" id="sizeDot" aria-hidden="true"></span>
+      </div>
+      <div class="field" id="pressureField">
+        <label for="pressure">Pressure</label>
+        <input type="range" id="pressure" min="10" max="100">
+        <span class="pressure-hint" id="pressureHint">Medium</span>
+      </div>
+      <fieldset class="field looks" id="lookField" hidden>
+        <legend>Fill shapes with</legend>
+        <div class="chips" id="looks"></div>
+      </fieldset>
+      <label class="switch">
+        <input type="checkbox" id="clip">
+        <span class="track" aria-hidden="true"></span>
+        <span>Stay inside the lines</span>
+      </label>
+    </section>
+
+    <section class="book-card" id="bookCard" aria-label="About this book">
+      <img id="bookCover" alt="" width="84" height="84">
+      <div>
+        <p class="eyebrow">This page is from</p>
+        <h2 id="bookTitle"></h2>
+        <p id="bookBlurb"></p>
+        <a class="buy" id="bookBuy" href="#" target="_blank" rel="noopener">Get the book on Amazon</a>
+      </div>
+    </section>
+
+    <p class="small-print">Pages © M.J. Artel. Free to colour here and print for personal and classroom use.</p>
+  </aside>
+</div>
+
+<dialog class="picker" id="picker" aria-labelledby="pickerTitle">
+  <div class="picker-head">
+    <h2 id="pickerTitle">Choose a page to colour</h2>
+    <button class="icon-btn" type="button" data-action="closePicker" aria-label="Close"></button>
+  </div>
+  <div id="pickerBody"></div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="print-sheet" id="printSheet"><img id="printImg" alt=""></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
