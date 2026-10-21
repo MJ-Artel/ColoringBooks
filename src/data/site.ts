@@ -14,7 +14,7 @@ export const SITE = {
   mailerlite: { accountId: '', formId: '' },
 
   // Shown on the Contact page (which stays hidden from menus and search until this is set).
-  contactEmail: '',
+  contactEmail: 'mjartel@proton.me',
 
   // Turn on after joining Amazon Associates: adds the required disclosure to every page.
   amazonAssociate: false,
