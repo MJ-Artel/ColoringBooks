@@ -766,7 +766,7 @@ async function composite() {
   out.width = W;
   out.height = H + band;
   const c = out.getContext('2d');
-  c.fillStyle = '#ffffff';
+  c.fillStyle = '#fffdf8';
   c.fillRect(0, 0, W, H + band);
   c.drawImage(canvas, 0, 0);
   c.globalCompositeOperation = 'multiply';

@@ -242,6 +242,10 @@ const zigzag = (y, h = 0.035) => Array.from({ length: 9 }, (_, i) => [0.1 + i * 
   const after = await coloured();
   check(after > before + 5000, `tapping the fox's shorts colours them (${after - before} px)`);
   await page.screenshot({ path: join(out, 'site-home-coloured.png') });
+  await page.locator('[data-clear]').click();
+  check((await coloured()) === 0, 'Start over clears the fox');
+  await page.locator('[data-undo]').click();
+  check((await coloured()) === after, 'Undo brings the colouring back');
   await Promise.all([page.waitForURL(/\/color\/#wildwood-29$/), page.locator('[data-studio]').click()]);
   await page.waitForSelector('body[data-ready="wildwood-29"]', { timeout: 15000 });
   const inStudio = await inked(page);

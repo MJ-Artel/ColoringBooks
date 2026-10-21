@@ -1,4 +1,4 @@
-/* M.J. Artel Colouring Studio: a sheet of paper on the table, art supplies in a yellow crayon box.
+/* M.J. Artel Colouring Studio: a sheet of cream paper on the desk, art supplies in a yellow crayon box.
    Same fonts, ink and crayons as the website (src/styles/global.css). */
 
 @font-face {
@@ -27,7 +27,8 @@
 }
 
 :root {
-  --table: #eef0f1;
+  --desk: #f6efe0;
+  --sheet: #fffdf8;
   --paper: #ffffff;
   --ink: #161616;
   --muted: #4d4d4d;
@@ -49,7 +50,7 @@
 html, body { height: 100%; }
 body {
   margin: 0;
-  background: var(--table);
+  background: var(--desk);
   color: var(--ink);
   font: 15px/1.45 var(--font-ui);
   overscroll-behavior: none;
@@ -234,7 +235,7 @@ svg { display: block; }
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-  background: var(--table);
+  background: radial-gradient(ellipse at 50% 42%, #fcf8ee 0%, var(--desk) 72%);
   cursor: crosshair;
 }
 .stage.is-brush { cursor: none; }
@@ -244,8 +245,8 @@ svg { display: block; }
   left: 0;
   top: 0;
   transform-origin: 0 0;
-  background: var(--paper);
-  box-shadow: 0 0 0 1px rgb(22 22 22 / .25), 0 18px 40px rgb(22 22 22 / .12);
+  background: var(--sheet);
+  box-shadow: 0 1px 3px rgba(60, 40, 20, .14), 0 22px 50px rgba(60, 40, 20, .2);
   will-change: transform;
   visibility: hidden;
 }

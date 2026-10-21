@@ -4,7 +4,7 @@
 //
 // Markup (src/components/ColourMe.astro):
 //   [data-colour-me data-page]  .sheet > img.paint (starting colours) + canvas + img.lines
-//   [data-crayon="#hex"] radios, [data-undo], [data-studio] link, [data-hint]
+//   [data-crayon="#hex"] radios, [data-undo], [data-clear], [data-studio] link, [data-hint]
 import { makeTextures } from './textures.js';
 import { findRegions } from './regions.js';
 import { Engine } from './engine.js';
@@ -32,6 +32,7 @@ function setUp(fig) {
   const canvas = fig.querySelector('canvas');
   const crayons = [...fig.querySelectorAll('[data-crayon]')];
   const undo = fig.querySelector('[data-undo]');
+  const clear = fig.querySelector('[data-clear]');
   const studio = fig.querySelector('[data-studio]');
   const hint = fig.querySelector('[data-hint]');
 
@@ -90,24 +91,34 @@ function setUp(fig) {
     const d = engine.update();
     if (d) ctx.putImageData(imageData, 0, 0, d[0], d[1], d[2] - d[0], d[3] - d[1]);
     undo.disabled = !engine.canUndo;
+    clear.disabled = engine.isBlank();
   }
+
+  const say = (key) => {
+    if (hint && hint.dataset[key]) hint.textContent = hint.dataset[key];
+  };
+
+  // The picture goes where the studio keeps it; a blank page is simply forgotten, as in the studio.
+  const store = () =>
+    new Promise((resolve) => {
+      if (engine.isBlank()) {
+        storage.removePage(id).then(resolve);
+        return;
+      }
+      try {
+        canvas.toBlob(async (blob) => {
+          if (blob) await storage.savePage(id, blob);
+          resolve();
+        }, 'image/png');
+      } catch {
+        resolve();
+      }
+    });
 
   function save() {
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => {
-      saving = saving.then(
-        () =>
-          new Promise((resolve) => {
-            try {
-              canvas.toBlob(async (blob) => {
-                if (blob) await storage.savePage(id, blob);
-                resolve();
-              }, 'image/png');
-            } catch {
-              resolve();
-            }
-          }),
-      );
+      saving = saving.then(store);
     }, 300);
   }
 
@@ -132,16 +143,24 @@ function setUp(fig) {
     const y = ((ev.clientY - r.top) / r.height) * engine.h;
     if (!engine.fill(x, y, CRAYON, { rgb, pressure: 0.9 })) return;
     show();
-    if (!touched) {
-      touched = true;
-      if (hint) hint.textContent = hint.dataset.after || hint.textContent;
-    }
+    say('after');
+    touched = true;
     save();
   });
 
   undo.addEventListener('click', () => {
     if (!engine || !engine.undo()) return;
     show();
+    save();
+  });
+
+  // Start over: a blank page, with Undo to bring the picture back (as in the studio).
+  clear.addEventListener('click', async () => {
+    await wake();
+    if (!engine || !engine.clear()) return;
+    show();
+    say('cleared');
+    touched = true;
     save();
   });
 
@@ -168,19 +187,11 @@ function setUp(fig) {
 
   // Save before leaving for the studio, so the picture is there when it opens.
   studio.addEventListener('click', async (ev) => {
-    if (!touched) return;
+    if (!touched || !engine) return;
     ev.preventDefault();
     clearTimeout(saveTimer);
-    await new Promise((resolve) => {
-      try {
-        canvas.toBlob(async (blob) => {
-          if (blob) await storage.savePage(id, blob);
-          resolve();
-        }, 'image/png');
-      } catch {
-        resolve();
-      }
-    });
+    await saving;
+    await store();
     location.href = studio.href;
   });
 

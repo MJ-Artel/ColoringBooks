@@ -3,7 +3,7 @@
 //   node scripts/art/textures.mjs [outDir]
 import sharp from 'sharp';
 
-const { makeTextures } = await import('../../color/js/textures.js');
+const { makeTextures, TEX } = await import('../../color/js/textures.js');
 const { findRegions } = await import('../../color/js/regions.js');
 const { Engine } = await import('../../color/js/engine.js');
 const { TOOLS, lookTool } = await import('../../color/js/brushes.js');
@@ -56,4 +56,17 @@ async function scribble(name, W, H, { slant = 0.35, passes = 1, gap = 22 } = {})
   await sharp(out, { raw: { width: W, height: H, channels: 4 } }).png({ compressionLevel: 9 }).toFile(OUT + name);
 }
 await scribble('scribble.png', 900, 150, { passes: 1, gap: 20 });
+
+// 3. The paper's tooth, the same tile the Colouring Studio lays over its page (makeTile in color/js/app.js),
+//    for pictures that are coloured outside the studio.
+{
+  const out = Buffer.alloc(TEX * TEX * 3);
+  for (let i = 0; i < TEX * TEX; i++) {
+    const v = 255 - (255 - textures.paper[i]) * 0.04;
+    out[i * 3] = Math.round(v);
+    out[i * 3 + 1] = Math.round(v - 1);
+    out[i * 3 + 2] = Math.round(v - 4);
+  }
+  await sharp(out, { raw: { width: TEX, height: TEX, channels: 3 } }).jpeg({ quality: 82, mozjpeg: true }).toFile(OUT + 'paper-tooth.jpg');
+}
 console.log('ok');

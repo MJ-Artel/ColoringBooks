@@ -2,6 +2,7 @@
 // A studio page visitors can colour right here: tap a crayon, tap the picture (color/js/colour-me.js).
 // The starting colours are a picture made with the studio's own wax crayon, so nothing jumps when the
 // engine takes over.
+import Arrow from './Arrow.astro';
 import { href } from '../lib/paths';
 
 interface Props {
@@ -43,6 +44,7 @@ const crayons = [
     <img class="paint" src={href(start)} width={width} height={height} alt="" fetchpriority="high" />
     <canvas hidden aria-hidden="true"></canvas>
     <img class="lines" src={href(`color/pages/${page}.png`)} width={width} height={height} alt={alt} draggable="false" />
+    <div class="tooth" aria-hidden="true"></div>
   </div>
   <figcaption>
     <div class="crayons" role="radiogroup" aria-label="Crayons">
@@ -66,11 +68,15 @@ const crayons = [
         ))
       }
     </div>
-    <p class="how" data-hint data-after={after}>{hint}</p>
+    <p class="how" data-hint data-after={after} data-cleared="Cleared. Press Undo to bring it back.">{hint}</p>
     <p class="tools">
-      <button class="undo" type="button" data-undo disabled>Undo</button>
-      <a data-studio href={href(`color/#${page}`)}>Keep colouring in the Studio</a>
+      <button type="button" data-undo disabled>Undo</button>
+      <button type="button" data-clear>Start over</button>
     </p>
+    <div class="studio">
+      <a class="btn btn-primary" data-studio href={href(`color/#${page}`)}>Keep colouring in the Studio<Arrow /></a>
+      <p>Sixteen pages from all three books, with pencil crayons, paints, felt tips and glitter pens. Free, and no sign-up.</p>
+    </div>
   </figcaption>
 </figure>
 
@@ -79,11 +85,12 @@ const crayons = [
 <style>
   .colour-me { margin: 0; }
   .sheet {
-    position: relative; overflow: hidden; background: #fff; border: var(--line) solid var(--ink); border-radius: 8px;
+    position: relative; overflow: hidden; background: var(--sheet); border: var(--line) solid var(--ink); border-radius: 8px;
     cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none;
   }
   .sheet > * { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .lines { mix-blend-mode: multiply; pointer-events: none; }
+  .lines, .tooth { mix-blend-mode: multiply; pointer-events: none; }
+  .tooth { background: url("../../assets/ui/paper-tooth.jpg") 0 0 / 256px 256px; }
   figcaption { display: grid; gap: 4px; margin-top: 14px; }
   .crayons { display: flex; align-items: flex-end; gap: clamp(4px, 1.2vw, 10px); height: 64px; padding: 0 2px; }
   .crayons button {
@@ -96,11 +103,16 @@ const crayons = [
   .crayons .body { fill: var(--c); stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; }
   .crayons .band { fill: none; stroke: var(--ink); stroke-width: 2; }
   .how { margin: 6px 0 0; font: 650 1.05rem/1.35 var(--font-display); }
-  .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; margin: 2px 0 0; }
-  .undo {
-    padding: 4px 12px; border: 2px solid var(--ink); border-radius: 10px; background: #fff;
+  .tools { display: flex; flex-wrap: wrap; gap: 10px; margin: 4px 0 0; }
+  .tools button {
+    padding: 5px 13px; border: 2px solid var(--ink); border-radius: 10px; background: #fff;
     font: 650 .95rem/1.2 var(--font-display); color: var(--ink); cursor: pointer;
   }
-  .undo:disabled { opacity: .4; cursor: default; }
-  .tools a { font-weight: 700; }
+  .tools button:hover:not(:disabled) { background: var(--crayon), var(--yellow); }
+  .tools button:disabled { opacity: .4; cursor: default; }
+  .studio {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 18px; padding-top: 18px;
+    border-top: 2px dashed var(--ink);
+  }
+  .studio p { flex: 1 1 16rem; margin: 0; color: var(--ink-2); font-size: var(--step--1); }
 </style>

@@ -37,6 +37,7 @@
 
 :root {
   --paper: #ffffff;
+  --sheet: #fffdf8; /* the colouring paper, as in the Colouring Studio */
   --ink: #161616;
   --ink-2: #4d4d4d; /* secondary text: 8.2:1 on paper */
   --line: 2.5px; /* the weight of the books' outlines at screen size */
