@@ -2,7 +2,7 @@
 
 The website for M.J. Artel's colouring books (The Wildwood Games, the Robot Coloring Book and the Cars Coloring
 Book): an [Astro](https://astro.build) site plus the **Colouring Studio**, where visitors colour book pages in the
-browser. Published to GitHub Pages by GitHub Actions.
+browser. Published to GitHub Pages by GitHub Actions on every push to `main`.
 
 ## What's where
 
@@ -43,19 +43,19 @@ Pushes to `main` publish the site.
   thumbnail), put the files in `color/pages/` and `color/thumbs/`, and add it to `PAGES` in `color/js/pages.js`.
 - **A translated edition:** add it to `editions` in the book's Markdown file.
 
-## Going live: switches to flip
+## Switches to flip
 
-1. **Publish with GitHub Actions (one time):** Settings → Pages → Build and deployment → Source:
-   **GitHub Actions**. Until then GitHub keeps serving the old one-page site from the repository, and the
-   workflow's deploy step waits. After the switch, re-run the latest workflow (Actions → Build and deploy the
-   site → Run workflow), or push anything. Then the old `index.html` and `style.css` at the repository root can go.
-2. **Email sign-up (MailerLite):** create a group (e.g. "Free colouring pack") and an embedded form for it, with
+The site publishes from GitHub Actions (Settings → Pages → Source: GitHub Actions). The rest switch on from
+`src/data/site.ts` and friends:
+
+1. **Email sign-up (MailerLite):** create a group (e.g. "Free colouring pack") and an embedded form for it, with
    double opt-in on. In the form's HTML code, the action address looks like
    `https://assets.mailerlite.com/jsonp/<accountId>/forms/<formId>/subscribe`; put both numbers in
    `src/data/site.ts`. Add an automation that emails the pack link to new members of the group. The site switches
    from the plain download to the sign-up form automatically.
-3. **Contact page:** set `contactEmail` in `src/data/site.ts`. The page appears in the footer and in search.
-4. **Amazon Associates:** after joining, set `amazonAssociate: true` (adds the disclosure) and swap the store links
+2. **Contact page:** set `contactEmail` in `src/data/site.ts`. The page appears in the footer and in search.
+3. **Amazon Associates:** after joining, set `amazonAssociate: true` (adds the disclosure) and swap the store links
    in `color/js/pages.js` for your tagged links.
+4. **Analytics:** set `cloudflareBeacon` to a Cloudflare Web Analytics token (cookie-free, so no banner needed).
 5. **Custom domain:** point the domain at GitHub Pages (Settings → Pages → Custom domain shows the DNS records),
    then in `astro.config.mjs` set `site` to the domain and `base` to `'/'`, and update `public/robots.txt`.
