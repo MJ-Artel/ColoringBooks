@@ -3,6 +3,7 @@ title: "Teamwork and Sportsmanship Activities for Kids"
 seoTitle: "Teamwork & Sportsmanship Activities for Kids (Classroom-Ready)"
 description: "Ten classroom-ready teamwork and sportsmanship activities for kids aged 4–10, with discussion questions from The Wildwood Games and free printables."
 pubDate: 2026-10-21
+order: 3
 book: wildwood
 hero: ../../../color/pages/wildwood-3.png
 heroAlt: "Colouring page from The Wildwood Games: a wolf, a bear, a fox and an eagle hold up blank signs under a banner that says Create a Symbol for Each Team"

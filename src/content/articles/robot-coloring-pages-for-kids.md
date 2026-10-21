@@ -3,6 +3,7 @@ title: "Robot Colouring Pages for Kids, with a Story to Read Along"
 seoTitle: "Robot Coloring Pages for Kids, with a Story to Read Along"
 description: "Free robot colouring pages for kids aged 4–10, with the story of Scribbles the robot to read along, tips for shiny metal, and robot drawing prompts."
 pubDate: 2026-10-21
+order: 4
 book: robot
 hero: ../../../assets/robot-3.jpg
 heroAlt: "Colouring page from the Robot Coloring Book: Scribbles, a smiling square-headed robot with round eyes and a control panel on his chest"

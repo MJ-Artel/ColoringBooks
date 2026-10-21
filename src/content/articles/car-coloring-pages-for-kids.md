@@ -3,6 +3,7 @@ title: "Car Colouring Pages for Kids Who Love Cars"
 seoTitle: "Car Coloring Pages for Kids Who Love Cars (Free + Printable)"
 description: "Free car colouring pages for kids aged 4–10: classic beetles, a 1950s cruiser and more to colour online or print, with tips for shiny paint, chrome and tyres."
 pubDate: 2026-10-21
+order: 5
 book: cars
 hero: ../../../assets/cars-35.jpg
 heroAlt: "Colouring page from the Cars Coloring Book: a 1950s car rolling down a sunny road under bold sun rays"

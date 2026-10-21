@@ -9,6 +9,7 @@ import FreePack from '../../components/FreePack.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { href } from '../../lib/paths';
 import { author, breadcrumbs, faqPage } from '../../lib/schema';
+import { publishedArticles } from '../../lib/articles';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles', ({ data }) => !data.draft);
@@ -20,7 +21,7 @@ const d = article.data;
 const { Content } = await render(article);
 const books = await getCollection('books');
 const book = books.find((b) => b.data.key === d.book)!;
-const related = (await getCollection('articles', ({ data, id }) => !data.draft && id !== article.id)).slice(0, 3);
+const related = (await publishedArticles()).filter((a) => a.id !== article.id).slice(0, 3);
 const trail = [{ name: 'Blog', path: 'blog/' }, { name: d.title, path: `blog/${article.id}/` }];
 const hero = await getImage({ src: d.hero, width: 1200, format: 'jpg' });
 const site = Astro.site;

@@ -3,6 +3,7 @@ title: "Field Day Activities for Kids: 12 Wildwood Games Ideas"
 seoTitle: "Field Day Activities for Kids: 12 Ideas + Free Printables"
 description: "Twelve field day activities for kids aged 4–10, built around the four animal teams of The Wildwood Games, with a medal ceremony and free printables."
 pubDate: 2026-10-21
+order: 1
 book: wildwood
 hero: ../../../assets/page-33.jpg
 heroAlt: "Colouring page from The Wildwood Games: a fox leaps a hurdle on the way to the finish line"

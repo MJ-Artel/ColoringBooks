@@ -3,6 +3,7 @@ title: "Free Woodland Animal Colouring Pages: Fox, Bear, Wolf and Eagle"
 seoTitle: "Free Woodland Animal Coloring Pages: Fox, Bear, Wolf & Eagle"
 description: "Free woodland animal colouring pages for kids aged 4–10: fox, bear, wolf and eagle pages from The Wildwood Games, with real-life colour tips for each animal."
 pubDate: 2026-10-21
+order: 2
 book: wildwood
 hero: ../../../color/pages/wildwood-71.png
 heroAlt: "Colouring page from The Wildwood Games: a bear, a fox, a wolf and an eagle, seen from behind, watch fireworks over the forest at the closing ceremony"

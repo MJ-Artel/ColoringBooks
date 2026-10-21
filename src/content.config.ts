@@ -53,6 +53,7 @@ const articles = defineCollection({
       hero: image(),
       heroAlt: z.string(),
       draft: z.boolean().default(false),
+      order: z.number().default(10),
       faq,
     }),
 });
