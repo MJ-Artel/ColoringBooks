@@ -11,7 +11,7 @@ export const SITE = {
   // MailerLite → Forms → Embedded forms → your form → "HTML code". Copy the two numbers from the
   // form's action address: https://assets.mailerlite.com/jsonp/<accountId>/forms/<formId>/subscribe
   // Until both are set, the free pack is a plain download.
-  mailerlite: { accountId: '', formId: '' },
+  mailerlite: { accountId: '2730927', formId: '201950724989388401' },
 
   // Shown on the Contact page (which stays hidden from menus and search until this is set).
   contactEmail: 'mjartel@proton.me',
