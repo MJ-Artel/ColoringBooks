@@ -22,6 +22,8 @@ const books = defineCollection({
       pictures: z.string(),
       trim: z.string(),
       newest: z.boolean().default(false),
+      copyrightYear: z.number(),
+      isbn: z.string().optional(),
       cover: image(),
       coverAlt: z.string(),
       features: z.array(z.object({ title: z.string(), text: z.string() })),

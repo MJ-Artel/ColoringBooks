@@ -11,6 +11,8 @@ pageCount: 76
 pictures: "37"
 trim: "8.625 × 8.75 in (22 × 22 cm)"
 newest: true
+copyrightYear: 2026
+isbn: "9798243597142"
 cover: ../../../assets/wildwood-cover.jpg
 coverAlt: "The Wildwood Games cover: a bear, a wolf, an eagle and a fox on a winners’ podium in the forest"
 features:

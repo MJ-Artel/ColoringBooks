@@ -10,6 +10,7 @@ ages: "4–10"
 pageCount: 82
 pictures: "40"
 trim: "8.625 × 8.75 in (22 × 22 cm)"
+copyrightYear: 2023
 cover: ../../../assets/cars-cover.jpg
 coverAlt: "Cars Coloring Book cover: a row of cartoon cars, from a bubbly classic to a sports car"
 features:

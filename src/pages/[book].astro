@@ -32,10 +32,13 @@ const schema = [
     '@context': 'https://schema.org',
     '@type': 'Book',
     name: d.title,
+    alternateName: d.fullTitle !== d.title ? d.fullTitle : undefined,
     description: d.description,
     author: author(site),
     bookFormat: 'https://schema.org/Paperback',
     numberOfPages: d.pageCount,
+    copyrightYear: d.copyrightYear,
+    isbn: d.isbn,
     inLanguage: 'en',
     image: new URL(coverCard.src, site).toString(),
     url: new URL(href(`${book.id}/`), site).toString(),
@@ -67,6 +70,19 @@ const schema = [
           <BuyButton book={d.key} />
           {studioPages.length > 0 && <a class="btn btn-ghost try" href={href(`color/#${studioPages[0].id}`)}>Colour a page online</a>}
         </div>
+        {
+          d.editions.length > 0 && (
+            <p class="editions">
+              Also in other languages:{' '}
+              {d.editions.map((e, i) => (
+                <>
+                  {i > 0 && ' · '}
+                  <a href={e.url} target="_blank" rel="noopener">{e.label}</a>
+                </>
+              ))}
+            </p>
+          )
+        }
       </div>
     </div>
   </section>
@@ -130,6 +146,8 @@ const schema = [
   .facts strong { color: var(--ink); }
   .actions { align-items: flex-start; }
   .try { margin-top: 0; }
+  .editions { margin: 16px 0 0; font-size: var(--step--1); color: var(--muted); }
+  .editions a { font-weight: 800; }
   .story { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 56px); align-items: start; }
   .features { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
   .features li { padding: 18px 20px; }

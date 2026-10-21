@@ -10,6 +10,7 @@ ages: "4–10"
 pageCount: 66
 pictures: "30+"
 trim: "8.625 × 8.75 in (22 × 22 cm)"
+copyrightYear: 2022
 cover: ../../../assets/robot-cover.jpg
 coverAlt: "Robot Coloring Book cover: three cartoon robots and a big crayon"
 features:
