@@ -5,7 +5,11 @@ export const BOOKS = {
     title: 'The Wildwood Games',
     blurb: 'Foxes, Bears, Wolves and Eagles compete for forest fame. Every picture comes with a page of story.',
     cover: '../assets/wildwood-cover.jpg',
-    stores: { us: 'https://www.amazon.com/dp/B0GMQHKPHF', ca: 'https://www.amazon.ca/dp/B0GNZSL2VB' },
+    stores: {
+      us: 'https://www.amazon.com/dp/B0GMQHKPHF',
+      ca: 'https://www.amazon.ca/dp/B0GNZSL2VB',
+      uk: 'https://www.amazon.co.uk/dp/B0GNZSL2VB',
+    },
     anchor: '../#inside',
   },
   robot: {

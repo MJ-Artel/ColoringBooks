@@ -212,7 +212,7 @@ for (const [locale, host] of [['en-US', 'www.amazon.com'], ['en-CA', 'www.amazon
   const robot = await page.locator('[data-buy="robot"]').getAttribute('href');
   const wildwood = await page.locator('[data-buy="wildwood"]').getAttribute('href');
   check(new URL(robot).host === host, `${locale}: Robot book goes to ${new URL(robot).host}`);
-  check(['www.amazon.com', 'www.amazon.ca'].includes(new URL(wildwood).host), `${locale}: Wildwood goes to ${new URL(wildwood).host}`);
+  check(new URL(wildwood).host === host, `${locale}: Wildwood goes to ${new URL(wildwood).host}`);
   if (locale === 'en-US') {
     await page.screenshot({ path: join(out, 'landing-desktop.png'), fullPage: true });
     const pack = await page.request.get(`${base}/assets/mj-artel-free-colouring-pack.pdf`);
