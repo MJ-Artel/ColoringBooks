@@ -1,0 +1,80 @@
+{
+  "page": "wildwood-29",
+  "seed": 5,
+  "ops": [
+    {
+      "scribble": [
+        420,
+        80,
+        880,
+        560
+      ],
+      "at": [
+        640,
+        230
+      ],
+      "tool": "crayon",
+      "hex": "#f18f0c",
+      "angle": -35,
+      "gap": 16,
+      "radius": 10,
+      "pressure": 0.78
+    },
+    {
+      "scribble": [
+        420,
+        80,
+        880,
+        560
+      ],
+      "at": [
+        640,
+        230
+      ],
+      "tool": "crayon",
+      "hex": "#f18f0c",
+      "angle": -62,
+      "gap": 24,
+      "radius": 9,
+      "pressure": 0.55,
+      "part": 0.75
+    },
+    {
+      "scribble": [
+        700,
+        560,
+        1166,
+        900
+      ],
+      "at": [
+        950,
+        720
+      ],
+      "tool": "crayon",
+      "hex": "#f18f0c",
+      "angle": -20,
+      "gap": 15,
+      "radius": 10,
+      "pressure": 0.78
+    },
+    {
+      "scribble": [
+        470,
+        490,
+        840,
+        800
+      ],
+      "at": [
+        650,
+        620
+      ],
+      "tool": "crayon",
+      "hex": "#197fe1",
+      "angle": 25,
+      "gap": 15,
+      "radius": 10,
+      "pressure": 0.8,
+      "part": 0.42
+    }
+  ]
+}

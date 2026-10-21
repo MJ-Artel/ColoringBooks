@@ -1,0 +1,198 @@
+{
+  "page": "wildwood-5",
+  "seed": 21,
+  "ops": [
+    {
+      "scribble": [
+        0,
+        0,
+        760,
+        420
+      ],
+      "at": [
+        600,
+        60
+      ],
+      "tool": "crayon",
+      "hex": "#8cd6f7",
+      "angle": -28,
+      "gap": 19,
+      "radius": 11,
+      "pressure": 0.62,
+      "part": 0.55
+    },
+    {
+      "scribble": [
+        230,
+        90,
+        420,
+        300
+      ],
+      "at": [
+        330,
+        190
+      ],
+      "tool": "crayon",
+      "hex": "#f18f0c",
+      "angle": -60,
+      "gap": 12,
+      "radius": 10,
+      "pressure": 0.85
+    },
+    {
+      "fill": [
+        335,
+        240
+      ],
+      "look": "crayon",
+      "hex": "#fcd116",
+      "pressure": 0.9
+    },
+    {
+      "fill": [
+        330,
+        300
+      ],
+      "look": "crayon",
+      "hex": "#c98a2b",
+      "pressure": 0.85
+    },
+    {
+      "scribble": [
+        280,
+        320,
+        400,
+        520
+      ],
+      "at": [
+        330,
+        357
+      ],
+      "tool": "crayon",
+      "hex": "#d9a066",
+      "angle": -75,
+      "gap": 14,
+      "radius": 9,
+      "pressure": 0.7
+    },
+    {
+      "fill": [
+        330,
+        420
+      ],
+      "look": "crayon",
+      "hex": "#5cb83c",
+      "pressure": 0.85
+    },
+    {
+      "scribble": [
+        430,
+        280,
+        720,
+        640
+      ],
+      "at": [
+        560,
+        420
+      ],
+      "tool": "crayon",
+      "hex": "#5cb83c",
+      "angle": -35,
+      "gap": 15,
+      "radius": 11,
+      "pressure": 0.8
+    },
+    {
+      "scribble": [
+        430,
+        280,
+        720,
+        640
+      ],
+      "at": [
+        560,
+        420
+      ],
+      "tool": "crayon",
+      "hex": "#5cb83c",
+      "angle": -70,
+      "gap": 22,
+      "radius": 9,
+      "pressure": 0.55,
+      "part": 0.8
+    },
+    {
+      "scribble": [
+        690,
+        520,
+        900,
+        800
+      ],
+      "at": [
+        760,
+        650
+      ],
+      "tool": "crayon",
+      "hex": "#5cb83c",
+      "angle": -35,
+      "gap": 15,
+      "radius": 10,
+      "pressure": 0.8
+    },
+    {
+      "scribble": [
+        470,
+        500,
+        640,
+        640
+      ],
+      "at": [
+        540,
+        560
+      ],
+      "tool": "crayon",
+      "hex": "#b5762f",
+      "angle": -30,
+      "gap": 14,
+      "radius": 10,
+      "pressure": 0.8
+    },
+    {
+      "scribble": [
+        600,
+        480,
+        840,
+        660
+      ],
+      "at": [
+        700,
+        560
+      ],
+      "tool": "crayon",
+      "hex": "#b5762f",
+      "angle": -30,
+      "gap": 15,
+      "radius": 10,
+      "pressure": 0.75,
+      "part": 0.45
+    },
+    {
+      "fill": [
+        105,
+        100
+      ],
+      "look": "crayon",
+      "hex": "#fcd116",
+      "pressure": 0.85
+    },
+    {
+      "fill": [
+        260,
+        90
+      ],
+      "look": "crayon",
+      "hex": "#f18f0c",
+      "pressure": 0.8
+    }
+  ]
+}
