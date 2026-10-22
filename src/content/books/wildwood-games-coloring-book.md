@@ -48,6 +48,17 @@ previews:
   - image: ../../../assets/page-63.jpg
     caption: The moon-lit marathon
     alt: Bears, wolves and foxes race through the forest under a crescent moon
+editions:
+  - label: Deutsch
+    url: https://www.amazon.de/dp/B0GNZPRFY3
+  - label: Español
+    url: https://www.amazon.es/dp/B0GPK8VL65
+  - label: Français
+    url: https://www.amazon.fr/dp/B0GN39NTH3
+  - label: Polski
+    url: https://www.amazon.pl/dp/B0GPBFSR5Q
+  - label: 日本語
+    url: https://www.amazon.co.jp/dp/B0GNMRH29Q
 faq:
   - q: What ages is The Wildwood Games for?
     a: Ages 4 to 10, and any age can enjoy it. Younger children love the big animal characters and simple shapes; older kids follow the story from event to event and add their own details.
