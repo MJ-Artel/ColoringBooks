@@ -49,15 +49,15 @@ previews:
     caption: The moon-lit marathon
     alt: Bears, wolves and foxes race through the forest under a crescent moon
 editions:
-  - label: Deutsch
+  - label: Deutsch (Wildwald-Spiele Malbuch)
     url: https://www.amazon.de/dp/B0GNZPRFY3
-  - label: Español
+  - label: Español (Los Juegos de los Bosques Silvestres)
     url: https://www.amazon.es/dp/B0GPK8VL65
-  - label: Français
+  - label: Français (Les Jeux des Bois Sauvages)
     url: https://www.amazon.fr/dp/B0GN39NTH3
-  - label: Polski
-    url: https://www.amazon.pl/dp/B0GPBFSR5Q
-  - label: 日本語
+  - label: Italiano (I Giochi dei Boschi Selvaggi)
+    url: https://www.amazon.it/dp/B0GPBFSR5Q
+  - label: 日本語 (森の王国競技会ぬりえ)
     url: https://www.amazon.co.jp/dp/B0GNMRH29Q
 faq:
   - q: What ages is The Wildwood Games for?
