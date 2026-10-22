@@ -6,6 +6,8 @@ export const author = (site: URL | undefined) => ({
   '@type': 'Person',
   name: 'M.J. Artel',
   url: new URL(href('about/'), site).toString(),
+  // The same author elsewhere, so search engines and AI assistants connect them. Add Goodreads when it exists.
+  sameAs: ['https://www.amazon.com/author/mjartel'],
 });
 
 export const breadcrumbs = (trail: { name: string; path: string }[], site: URL | undefined) => ({
