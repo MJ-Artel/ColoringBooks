@@ -45,6 +45,19 @@ previews:
   - image: ../../../assets/robot-53.jpg
     caption: New pencils
     alt: A robot dances in a shower of sparkles
+editions:
+  - label: Deutsch (Roboter Malbuch)
+    url: https://www.amazon.de/dp/B0BQHB4YRY
+  - label: Español (ROBOT Libro Para Colorear)
+    url: https://www.amazon.es/dp/B0BQ99KJ4M
+  - label: Français (ROBOT Livre de Coloriage)
+    url: https://www.amazon.fr/dp/B0BQ9HSHBD
+  - label: Italiano (Robot Libro da Colorare)
+    url: https://www.amazon.it/dp/B0BQG4LHL8
+  - label: Nederlands (Robot Kleurboek)
+    url: https://www.amazon.nl/dp/B0BQZV6JZD
+  - label: 日本語 (ロボットの塗り絵)
+    url: https://www.amazon.co.jp/dp/B0BQY1ZWXY
 faq:
   - q: What ages is the Robot Coloring Book for?
     a: Ages 4 to 10, and any age can enjoy it. The robots have big, clear shapes for younger children and lots of small parts for older ones.
